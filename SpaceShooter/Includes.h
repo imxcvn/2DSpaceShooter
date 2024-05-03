@@ -1,0 +1,12 @@
+#include <iostream>
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "SFML/Window.hpp"
+#include "MainMenu.h"
+#include "Scene.h"
+#include "GameObject.h"
+#include "MainMenuScene.h"
+#include "HighScoreScene.h"
+#include "PlayScene.h"
+#include "Game.h"
+#include <vector>
