@@ -5,6 +5,7 @@
 #include "MainMenu.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "Projectile.h"
 #include "MainMenuScene.h"
 #include "HighScoreScene.h"
 #include "PlayScene.h"

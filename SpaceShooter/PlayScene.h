@@ -22,7 +22,7 @@ class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
 	sf::Texture mainTexture;
-	std::vector<GameObject*> objects;
+	std::vector<Projectile*> objects;
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

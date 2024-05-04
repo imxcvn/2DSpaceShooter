@@ -5,7 +5,7 @@ PlayScene::PlayScene(float width, float height) {
 	mainTexture.loadFromFile("Texture/SpaceBackground1.png");
 	background.setTexture(&mainTexture);
 
-	GameObject* object = new GameObject{ Game::instance };
+	Projectile* object = new Projectile{ Game::instance };
 
 	objects.push_back(object);
 
