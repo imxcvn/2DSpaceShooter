@@ -3,17 +3,11 @@
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(960, 720), "Main Menu", sf::Style::Default);
-	//MainMenu mainMenu(window.getSize().x, window.getSize().y);
-	
 	window.setVerticalSyncEnabled(true);
 
-	//tlo menu
 	sf::Clock clock;
 
-
-	/*MainMenuScene mainMenu(window.getSize().x, window.getSize().y);
-	Scene* currentScene = &mainMenu;*/
-	Game game;
+	Game game{window};
 	game.screenSize = { 960, 720 };
 	game.initialize();
 	while (window.isOpen()) {
@@ -90,7 +84,6 @@ int main() {
 		float elapsed = time.asSeconds() * 1000;
 		game.update(elapsed);
 		window.clear();
-		//window.draw(background);
 		game.render(window);
 
 		window.display();

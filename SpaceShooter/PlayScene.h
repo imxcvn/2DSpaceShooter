@@ -23,6 +23,8 @@ private:
 	sf::RectangleShape background;
 	sf::Texture mainTexture;
 	std::vector<Projectile*> objects;
+	SpaceShip* spaceShip;
+
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

@@ -1,14 +1,15 @@
 #include "Includes.h"
 
 PlayScene::PlayScene(float width, float height) {
-	background.setSize(sf::Vector2f(4600, 2600));
+	background.setSize(sf::Vector2f(960, 720));
 	mainTexture.loadFromFile("Texture/SpaceBackground1.png");
 	background.setTexture(&mainTexture);
 
 	Projectile* object = new Projectile{ Game::instance };
 
 	objects.push_back(object);
-
+	spaceShip = new SpaceShip{ Game::instance };
+	spaceShip->setPosition(300, 650);
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
@@ -16,6 +17,7 @@ void PlayScene::render(sf::RenderWindow& window) {
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}
+	spaceShip->render(window);
 }
 
 bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
@@ -32,6 +34,7 @@ void PlayScene::update(float elapsed) {
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->update(elapsed);
 	}
+	spaceShip->update(elapsed);
 }
 
 Circle::Circle(Game* game) {

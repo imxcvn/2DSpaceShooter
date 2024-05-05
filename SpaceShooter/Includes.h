@@ -2,12 +2,18 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
+#include <sstream>
+#include <regex>
+#include <string>
+#include <vector>
 #include "MainMenu.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "Projectile.h"
+#include "SpaceShip.h"
+#include "LoadingScene.h"
 #include "MainMenuScene.h"
 #include "HighScoreScene.h"
 #include "PlayScene.h"
 #include "Game.h"
-#include <vector>
+

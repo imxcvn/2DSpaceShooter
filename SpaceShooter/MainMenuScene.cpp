@@ -2,29 +2,29 @@
 
 
 MainMenuScene::MainMenuScene(float width, float hight) {
-	if (!font.loadFromFile("Font/slkscr.ttf")) {
+	if (!font.loadFromFile("Font/ARCADE.ttf")) {
 		std::cout << "Nie ma czcionki." << std::endl;
 	}
 
 	mainMenu[0].setFont(font);
 	mainMenu[0].setString("Play");
-	mainMenu[0].setCharacterSize(70);
-	mainMenu[0].setPosition(220, 200);
+	mainMenu[0].setCharacterSize(90);
+	mainMenu[0].setPosition(410, 240);
 	mainMenu[0].setFillColor(activeColor);
 
 	mainMenu[1].setFont(font);
 	mainMenu[1].setString("Highest Score");
-	mainMenu[1].setCharacterSize(70);
-	mainMenu[1].setPosition(220, 300);
+	mainMenu[1].setCharacterSize(90);
+	mainMenu[1].setPosition(250, 360);
 
 	mainMenu[2].setFont(font);
 	mainMenu[2].setString("Exit");
-	mainMenu[2].setCharacterSize(70);
-	mainMenu[2].setPosition(220, 400);
+	mainMenu[2].setCharacterSize(90);
+	mainMenu[2].setPosition(410, 500);
 
 	MainMenuSelected = 0;
 
-	background.setSize(sf::Vector2f(4600, 2600));
+	background.setSize(sf::Vector2f(960, 720));
 
 	mainTexture.loadFromFile("Texture/SpaceBackground.png");
 	background.setTexture(&mainTexture);
@@ -63,7 +63,7 @@ int MainMenuScene::MainMenuPressed() {
 	return MainMenuSelected;
 }
 bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
-	if (event.type == sf::Event::KeyReleased) {
+	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Up) {
 			moveUp();
 			return true;
