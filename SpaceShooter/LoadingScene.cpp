@@ -15,7 +15,7 @@ LoadingScene::LoadingScene(float width, float hight) {
 	playerName.setFillColor(color);
 	playerName.setString(input);
 	playerName.setCharacterSize(80);
-	playerName.setPosition(380, 350);
+	//playerName.setPosition(380, 350);
 
 	errorText.setFont(font);
 	errorText.setFillColor(color);
@@ -50,7 +50,11 @@ bool LoadingScene::isCorrect(const std::string& input) {
 
 bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	if (event.type == sf::Event::TextEntered) {
+
+		float x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
+		playerName.setPosition(x, 350);
 		errorText.setString("");
+
 		if (event.text.unicode == 13) { //enter 
 			if (isCorrect(input)) {
 				Game::instance->setPlayerName(input);
@@ -61,6 +65,8 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				errorText.setString("Invalid player name.\n Please try again.");
 				input.clear();
 				playerName.setString(input);
+				x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
+				playerName.setPosition(x, 350);
 				return false;
 			}
 		}
@@ -68,11 +74,15 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 			if (!input.empty()) {
 				input.pop_back();
 				playerName.setString(input);
+				x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
+				playerName.setPosition(x, 350);
 			}
 		}
 		else if (event.text.unicode < 128) { //reszta
 			input += static_cast<char>(event.text.unicode);
 			playerName.setString(input);
+			x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
+			playerName.setPosition(x, 350);
 		}
 	}
 

@@ -4,17 +4,21 @@ HighScoreScene::HighScoreScene(float width, float height, LoadingScene* loadingS
 	if (!font.loadFromFile("Font/ARCADE.ttf")) {
 		std::cout << "Nie ma czcionki." << std::endl;
 	}
-	//playerName = loadingScene->getPlayerName();
+
 	text.setFont(font);
 	text.setFillColor(color);
 	text.setCharacterSize(90);
+	text.setString("highest score:");
 	
+	name.setFont(font);
+	name.setFillColor(color);
+	name.setCharacterSize(90);
 
 	highestScore.setFont(font);
 	highestScore.setFillColor(color);
 	highestScore.setString(std::to_string(Score));
 	highestScore.setCharacterSize(190);
-	highestScore.setPosition(320, 350);
+	highestScore.setPosition(320, 390);
 
 	background.setSize(sf::Vector2f(960, 720));
 	mainTexture.loadFromFile("Texture/SpaceBackground2.png");
@@ -24,13 +28,16 @@ HighScoreScene::HighScoreScene(float width, float height, LoadingScene* loadingS
 void HighScoreScene::render(sf::RenderWindow& window) {
 	window.draw(background);
 	window.draw(highestScore);
+	window.draw(name);
 	window.draw(text);
 }
 
 void HighScoreScene::shown() {
-	text.setString(Game::instance->getPlayerName() + "'s highest score:");
-	float x = Game::instance->screenSize.x/2 - text.getLocalBounds().width/2;
-	text.setPosition(x, 200);
+	name.setString(Game::instance->getPlayerName() + "'s");
+	float x = Game::instance->screenSize.x/2 - name.getLocalBounds().width/2;
+	name.setPosition(x, 200);
+	x = Game::instance->screenSize.x / 2 - text.getLocalBounds().width / 2;
+	text.setPosition(x, 300);
 }
 
 
