@@ -41,6 +41,19 @@ const std::string& Game::getPlayerName() const {
 	return playerName;
 }
 
+void Game::setplayerPosition(float px, float py) {
+	playerPositionX = px;
+	playerPositionY = py;
+}
+
+float Game::getPositionX() const {
+	return playerPositionX;
+}
+
+float Game::getPositionY() const {
+	return playerPositionY;
+}
+
 void Game::changeScene(Scene* newScene) {
 	nextScene = newScene;
 }

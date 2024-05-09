@@ -11,6 +11,8 @@ public:
 	Scene* nextScene;
 	sf::Vector2f screenSize;
 	std::string playerName;
+	float playerPositionX;
+	float playerPositionY;
 	sf::RenderWindow& gameWindow;
 	Game(sf::RenderWindow& window);
 	void initialize();
@@ -18,6 +20,9 @@ public:
 	void render(sf::RenderWindow& window);
 	void setPlayerName(const std::string& name);
 	const std::string& getPlayerName() const;
+	void setplayerPosition(float px, float py);
+	float getPositionX() const;
+	float getPositionY() const;
 	bool handleEvent(const sf::Event& e, sf::RenderWindow& window);
 	void changeScene(Scene* newScene);
 	~Game();

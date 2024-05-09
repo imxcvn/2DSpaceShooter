@@ -2,7 +2,7 @@
 
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(960, 720), "Main Menu", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(960, 720), "Space Odyssey", sf::Style::Default);
 	window.setVerticalSyncEnabled(true);
 
 	sf::Clock clock;

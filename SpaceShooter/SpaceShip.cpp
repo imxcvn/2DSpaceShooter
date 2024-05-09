@@ -6,8 +6,8 @@ SpaceShip::SpaceShip(Game* game) {
 	}
 	shape.setTexture(shapeTexture);
 	sf::Vector2u textureSize = shapeTexture.getSize();
-	sizeX = 50.f;
-	sizeY = 50.f;
+	sizeX = 70.f;
+	sizeY = 70.f;
 	float scaleX = sizeX / textureSize.x;
 	float scaleY = sizeY / textureSize.y;
 	shape.setScale(scaleX, scaleY);
@@ -18,25 +18,26 @@ SpaceShip::SpaceShip(Game* game) {
 
 void SpaceShip::update(float elapsed) {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(Game::instance->gameWindow);
-	px = mousePosition.x;
+	px = mousePosition.x - sizeX / 2;
+	py = mousePosition.y - sizeX / 2;
+	Game::instance->setplayerPosition(px + sizeX/2, py);
 
-	/*float deltaX = vx * elapsed / 1000;
-	float deltaY = vy * elapsed / 1000;
-	px += deltaX;
-	py += deltaY;
-	if (py + sizeY >= game->screenSize.y && vy > 0) {
+	if (py <= 0) {
+		py = 0;
+	}
+	if (py >= Game::instance->screenSize.y - sizeY) {
+		py = Game::instance->screenSize.y - sizeY;
+	}
 
-		vy = -vy;
+	if (px <= 0) {
+		px = 0;
+		Game::instance->setplayerPosition(px + sizeX / 2, py);
 	}
-	else if (py <= 0 && vy < 0) {
-		vy = -vy;
+	if (px >= Game::instance->screenSize.x - sizeX) {
+		px = Game::instance->screenSize.x - sizeX;
+		Game::instance->setplayerPosition(px + sizeX / 2, py);
 	}
-	if (px + sizeX >= game->screenSize.x && vx > 0) {
-		vx = -vx;
-	}
-	else if (px <= 0 && vx < 0) {
-		vx = -vx;
-	}*/
+
 }
 
 void SpaceShip::render(sf::RenderWindow& window) {

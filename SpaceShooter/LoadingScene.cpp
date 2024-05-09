@@ -6,16 +6,17 @@ LoadingScene::LoadingScene(float width, float hight) {
 	}
 
 	text.setFont(font);
-	text.setFillColor(color);
+	text.setFillColor({144, 176, 162});
 	text.setString("Enter your name");
 	text.setCharacterSize(100);
 	text.setPosition(140, 200);
+	text.setOutlineColor(sf::Color::White);
+	text.setOutlineThickness(2);
 
 	playerName.setFont(font);
 	playerName.setFillColor(color);
 	playerName.setString(input);
 	playerName.setCharacterSize(80);
-	//playerName.setPosition(380, 350);
 
 	errorText.setFont(font);
 	errorText.setFillColor(color);
@@ -95,19 +96,3 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 }
 
 
-/*
-bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::Return) {
-			if (isCorrect(input)) {
-				Game::instance->changeScene(Game::instance->mainMenuScene);
-				return true;
-			} else
-
-
-
-		}
-	}
-	return false;
-}
-*/

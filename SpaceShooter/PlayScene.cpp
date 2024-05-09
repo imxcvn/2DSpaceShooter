@@ -2,7 +2,7 @@
 
 PlayScene::PlayScene(float width, float height) {
 	background.setSize(sf::Vector2f(960, 720));
-	mainTexture.loadFromFile("Texture/SpaceBackground1.png");
+	mainTexture.loadFromFile("Texture/SpaceBackground4.png");
 	background.setTexture(&mainTexture);
 
 	Projectile* object = new Projectile{ Game::instance };
@@ -25,6 +25,10 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 		if (event.key.code == sf::Keyboard::Escape) {
 			Game::instance->changeScene(Game::instance->mainMenuScene);
 			return true;
+		}
+		if (event.key.code == sf::Keyboard::Space) {
+			Projectile* object = new Projectile{ Game::instance };
+			objects.push_back(object);
 		}
 	}
 	return false;
