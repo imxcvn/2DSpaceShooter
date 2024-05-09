@@ -11,8 +11,10 @@ SpaceShip::SpaceShip(Game* game) {
 	float scaleX = sizeX / textureSize.x;
 	float scaleY = sizeY / textureSize.y;
 	shape.setScale(scaleX, scaleY);
-	vx = 0.f;
-	vy = 0.f;
+	px = game->screenSize.x / 2;   // ustawic pozycje poczatkowa 
+	py = game->screenSize.y;
+	/*vx = 0.f;
+	vy = 0.f;*/
 	this->game = game;
 }
 

@@ -5,6 +5,14 @@ PlayScene::PlayScene(float width, float height) {
 	mainTexture.loadFromFile("Texture/SpaceBackground4.png");
 	background.setTexture(&mainTexture);
 
+	backgroundStars.setSize(sf::Vector2f(960, 720));
+	starTexture.loadFromFile("Texture/stars4.png");
+	backgroundStars.setTexture(&starTexture);
+
+	backgroundStars2.setSize(sf::Vector2f(960, 720));
+	starTexture2.loadFromFile("Texture/stars5.png");
+	backgroundStars2.setTexture(&starTexture2);
+
 	Projectile* object = new Projectile{ Game::instance };
 
 	objects.push_back(object);
@@ -14,6 +22,8 @@ PlayScene::PlayScene(float width, float height) {
 
 void PlayScene::render(sf::RenderWindow& window) {
 	window.draw(background);
+	window.draw(backgroundStars);
+	window.draw(backgroundStars2);
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}

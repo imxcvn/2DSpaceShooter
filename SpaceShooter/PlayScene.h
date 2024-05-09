@@ -22,6 +22,10 @@ class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
 	sf::Texture mainTexture;
+	sf::RectangleShape backgroundStars;
+	sf::Texture starTexture;
+	sf::RectangleShape backgroundStars2;
+	sf::Texture starTexture2;
 	std::vector<Projectile*> objects;
 	SpaceShip* spaceShip;
 

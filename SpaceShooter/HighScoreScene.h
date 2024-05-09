@@ -10,6 +10,8 @@ private:
 	sf::Color color{ 255, 255, 255 };
 	sf::Text text;
 	sf::Text name;
+	sf::RectangleShape backgroundStars;
+	sf::Texture starTexture;
 public:
 	HighScoreScene(float width, float height, LoadingScene* loadingScene);
 	void updateName(LoadingScene* loadingScene);

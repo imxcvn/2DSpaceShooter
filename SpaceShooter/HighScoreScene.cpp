@@ -15,18 +15,25 @@ HighScoreScene::HighScoreScene(float width, float height, LoadingScene* loadingS
 	name.setCharacterSize(90);
 
 	highestScore.setFont(font);
-	highestScore.setFillColor(color);
+	highestScore.setFillColor({ 157, 179, 245 });
 	highestScore.setString(std::to_string(Score));
 	highestScore.setCharacterSize(190);
 	highestScore.setPosition(320, 390);
+	highestScore.setOutlineColor(sf::Color::White);
+	highestScore.setOutlineThickness(3.5);
 
 	background.setSize(sf::Vector2f(960, 720));
 	mainTexture.loadFromFile("Texture/SpaceBackground2.png");
 	background.setTexture(&mainTexture);
+
+	backgroundStars.setSize(sf::Vector2f(960, 720));
+	starTexture.loadFromFile("Texture/stars2.png");
+	backgroundStars.setTexture(&starTexture);
 }
 
 void HighScoreScene::render(sf::RenderWindow& window) {
 	window.draw(background);
+	window.draw(backgroundStars);
 	window.draw(highestScore);
 	window.draw(name);
 	window.draw(text);

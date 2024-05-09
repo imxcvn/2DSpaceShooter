@@ -17,19 +17,33 @@ LoadingScene::LoadingScene(float width, float hight) {
 	playerName.setFillColor(color);
 	playerName.setString(input);
 	playerName.setCharacterSize(80);
+	playerName.setOutlineColor(sf::Color::Black);
+	playerName.setOutlineThickness(1.5);
 
 	errorText.setFont(font);
 	errorText.setFillColor(color);
 	errorText.setCharacterSize(70);
 	errorText.setPosition(180, 400);
+	errorText.setOutlineColor(sf::Color::Black);
+	errorText.setOutlineThickness(1.5);
 
 	background.setSize(sf::Vector2f(960, 720));
 	mainTexture.loadFromFile("Texture/SpaceBackground3.png");
 	background.setTexture(&mainTexture);
+
+	backgroundStars.setSize(sf::Vector2f(960, 720));
+	starTexture.loadFromFile("Texture/stars6.png");
+	backgroundStars.setTexture(&starTexture);
+
+	backgroundStars2.setSize(sf::Vector2f(960, 720));
+	starTexture2.loadFromFile("Texture/stars7.png");
+	backgroundStars2.setTexture(&starTexture2);
 }
 
 void LoadingScene::render(sf::RenderWindow& window) {
 	window.draw(background);
+	window.draw(backgroundStars);
+	window.draw(backgroundStars2);
 	window.draw(text);
 	window.draw(playerName);
 	window.draw(errorText);
@@ -56,7 +70,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 		playerName.setPosition(x, 350);
 		errorText.setString("");
 
-		if (event.text.unicode == 13) { //enter 
+		if (event.text.unicode == 13) {  
 			if (isCorrect(input)) {
 				Game::instance->setPlayerName(input);
 				Game::instance->changeScene(Game::instance->mainMenuScene);
@@ -71,7 +85,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				return false;
 			}
 		}
-		else if (event.text.unicode == 8) { //backspace
+		else if (event.text.unicode == 8) { 
 			if (!input.empty()) {
 				input.pop_back();
 				playerName.setString(input);
@@ -79,7 +93,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				playerName.setPosition(x, 350);
 			}
 		}
-		else if (event.text.unicode < 128) { //reszta
+		else if (event.text.unicode < 128) { 
 			input += static_cast<char>(event.text.unicode);
 			playerName.setString(input);
 			x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
