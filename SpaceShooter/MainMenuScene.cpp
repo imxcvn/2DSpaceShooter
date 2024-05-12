@@ -7,17 +7,18 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	}
 
 	mainMenu[0].setFont(font);
-	mainMenu[0].setString("Space Odyssey");
-	mainMenu[0].setCharacterSize(125);
-	mainMenu[0].setPosition(65, 100);
+	mainMenu[0].setString(" Space \nOdyssey");
+	mainMenu[0].setCharacterSize(155);
 	mainMenu[0].setFillColor({187, 161, 227});
-	mainMenu[0].setOutlineColor({231,225,237});
+	mainMenu[0].setOutlineColor({ 243, 237, 250 });
 	mainMenu[0].setOutlineThickness(4);
+	float x = Game::instance->screenSize.x / 2 - mainMenu[0].getLocalBounds().width / 2;
+	mainMenu[0].setPosition(x, 100);
 
 	mainMenu[1].setFont(font);
 	mainMenu[1].setString("Play");
 	mainMenu[1].setCharacterSize(90);
-	mainMenu[1].setPosition(410, 270);
+	mainMenu[1].setPosition(350, 470);
 	mainMenu[1].setFillColor(activeColor);
 	mainMenu[1].setOutlineColor(sf::Color::White);
 	mainMenu[1].setOutlineThickness(3);
@@ -25,22 +26,22 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	mainMenu[2].setFont(font);
 	mainMenu[2].setString("Highest Score");
 	mainMenu[2].setCharacterSize(90);
-	mainMenu[2].setPosition(230, 390);
+	mainMenu[2].setPosition(140, 590);
 	mainMenu[2].setOutlineColor(sf::Color::Black);
 	mainMenu[2].setOutlineThickness(1.5);
 
 	mainMenu[3].setFont(font);
 	mainMenu[3].setString("Exit");
 	mainMenu[3].setCharacterSize(90);
-	mainMenu[3].setPosition(410, 530);
+	mainMenu[3].setPosition(350, 730);
 	mainMenu[3].setOutlineColor(sf::Color::Black);
 	mainMenu[3].setOutlineThickness(1.5);
 
 	MainMenuSelected = 1;
 
-	background.setSize(sf::Vector2f(960, 720));
-	backgroundStars.setSize(sf::Vector2f(960, 720));
-	backgroundStars2.setSize(sf::Vector2f(960, 720));
+	background.setSize(sf::Vector2f(820, 940));
+	backgroundStars.setSize(sf::Vector2f(820, 940));
+	backgroundStars2.setSize(sf::Vector2f(820, 940));
 
 	mainTexture.loadFromFile("Texture/SpaceBackground.png");
 	background.setTexture(&mainTexture);
@@ -95,6 +96,7 @@ int MainMenuScene::MainMenuPressed() {
 	return MainMenuSelected;
 }
 bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
+	
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Up) {
 			moveUp();
@@ -113,12 +115,9 @@ bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window
 			if (x == 2) {
 				Game::instance->changeScene(Game::instance->highScoreScene);
 			}
-			
 			if (x == 3) {
 				window.close();
 			}
-			
-			
 			return true;
 		}
 	}

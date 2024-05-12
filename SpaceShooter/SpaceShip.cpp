@@ -11,10 +11,8 @@ SpaceShip::SpaceShip(Game* game) {
 	float scaleX = sizeX / textureSize.x;
 	float scaleY = sizeY / textureSize.y;
 	shape.setScale(scaleX, scaleY);
-	px = game->screenSize.x / 2;   // ustawic pozycje poczatkowa 
+	px = game->screenSize.x / 2;  
 	py = game->screenSize.y;
-	/*vx = 0.f;
-	vy = 0.f;*/
 	this->game = game;
 }
 
@@ -30,7 +28,6 @@ void SpaceShip::update(float elapsed) {
 	if (py >= Game::instance->screenSize.y - sizeY) {
 		py = Game::instance->screenSize.y - sizeY;
 	}
-
 	if (px <= 0) {
 		px = 0;
 		Game::instance->setplayerPosition(px + sizeX / 2, py);
@@ -39,7 +36,6 @@ void SpaceShip::update(float elapsed) {
 		px = Game::instance->screenSize.x - sizeX;
 		Game::instance->setplayerPosition(px + sizeX / 2, py);
 	}
-
 }
 
 void SpaceShip::render(sf::RenderWindow& window) {

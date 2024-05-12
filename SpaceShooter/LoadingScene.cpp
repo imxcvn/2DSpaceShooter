@@ -7,9 +7,9 @@ LoadingScene::LoadingScene(float width, float hight) {
 
 	text.setFont(font);
 	text.setFillColor({144, 176, 162});
-	text.setString("Enter your name");
-	text.setCharacterSize(100);
-	text.setPosition(140, 200);
+	text.setString("Enter your\n  name:");
+	text.setCharacterSize(125);
+	text.setPosition(150, 200);
 	text.setOutlineColor(sf::Color::White);
 	text.setOutlineThickness(2);
 
@@ -23,19 +23,19 @@ LoadingScene::LoadingScene(float width, float hight) {
 	errorText.setFont(font);
 	errorText.setFillColor(color);
 	errorText.setCharacterSize(70);
-	errorText.setPosition(180, 400);
+	errorText.setPosition(130, 640);
 	errorText.setOutlineColor(sf::Color::Black);
 	errorText.setOutlineThickness(1.5);
 
-	background.setSize(sf::Vector2f(960, 720));
+	background.setSize(sf::Vector2f(820, 940));
 	mainTexture.loadFromFile("Texture/SpaceBackground3.png");
 	background.setTexture(&mainTexture);
 
-	backgroundStars.setSize(sf::Vector2f(960, 720));
+	backgroundStars.setSize(sf::Vector2f(820, 940));
 	starTexture.loadFromFile("Texture/stars6.png");
 	backgroundStars.setTexture(&starTexture);
 
-	backgroundStars2.setSize(sf::Vector2f(960, 720));
+	backgroundStars2.setSize(sf::Vector2f(820, 940));
 	starTexture2.loadFromFile("Texture/stars7.png");
 	backgroundStars2.setTexture(&starTexture2);
 }
@@ -67,7 +67,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 	if (event.type == sf::Event::TextEntered) {
 
 		float x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
-		playerName.setPosition(x, 350);
+		playerName.setPosition(x, 510);
 		errorText.setString("");
 
 		if (event.text.unicode == 13) {  
@@ -81,7 +81,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				input.clear();
 				playerName.setString(input);
 				x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
-				playerName.setPosition(x, 350);
+				playerName.setPosition(x, 510);
 				return false;
 			}
 		}
@@ -90,14 +90,14 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				input.pop_back();
 				playerName.setString(input);
 				x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
-				playerName.setPosition(x, 350);
+				playerName.setPosition(x, 510);
 			}
 		}
 		else if (event.text.unicode < 128) { 
 			input += static_cast<char>(event.text.unicode);
 			playerName.setString(input);
 			x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
-			playerName.setPosition(x, 350);
+			playerName.setPosition(x, 510);
 		}
 	}
 
@@ -105,7 +105,6 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 		window.close();
 		return true;
 	}
-
 	return false;
 }
 

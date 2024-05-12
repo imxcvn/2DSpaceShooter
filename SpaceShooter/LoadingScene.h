@@ -14,7 +14,6 @@ private:
 	sf::Text text;
 	sf::Text errorText;
 	sf::Color color{ 255, 255, 255 };
-	
 public:
 	LoadingScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

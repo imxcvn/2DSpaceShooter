@@ -17,16 +17,16 @@ HighScoreScene::HighScoreScene(float width, float height, LoadingScene* loadingS
 	highestScore.setFont(font);
 	highestScore.setFillColor({ 157, 179, 245 });
 	highestScore.setString(std::to_string(Score));
-	highestScore.setCharacterSize(190);
-	highestScore.setPosition(320, 390);
+	highestScore.setCharacterSize(210);
+	
 	highestScore.setOutlineColor(sf::Color::White);
 	highestScore.setOutlineThickness(3.5);
 
-	background.setSize(sf::Vector2f(960, 720));
+	background.setSize(sf::Vector2f(820, 940));
 	mainTexture.loadFromFile("Texture/SpaceBackground2.png");
 	background.setTexture(&mainTexture);
 
-	backgroundStars.setSize(sf::Vector2f(960, 720));
+	backgroundStars.setSize(sf::Vector2f(820, 940));
 	starTexture.loadFromFile("Texture/stars2.png");
 	backgroundStars.setTexture(&starTexture);
 }
@@ -42,9 +42,11 @@ void HighScoreScene::render(sf::RenderWindow& window) {
 void HighScoreScene::shown() {
 	name.setString(Game::instance->getPlayerName() + "'s");
 	float x = Game::instance->screenSize.x/2 - name.getLocalBounds().width/2;
-	name.setPosition(x, 200);
+	name.setPosition(x, 250);
 	x = Game::instance->screenSize.x / 2 - text.getLocalBounds().width / 2;
-	text.setPosition(x, 300);
+	text.setPosition(x, 350);
+	x = Game::instance->screenSize.x / 2 - highestScore.getLocalBounds().width / 2;
+	highestScore.setPosition(x, 480);
 }
 
 

@@ -6,11 +6,12 @@
 #include <regex>
 #include <string>
 #include <vector>
-#include "MainMenu.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "Projectile.h"
+#include "EnemyProjectile.h"
 #include "SpaceShip.h"
+#include "EnemySpaceship.h"
 #include "LoadingScene.h"
 #include "MainMenuScene.h"
 #include "HighScoreScene.h"

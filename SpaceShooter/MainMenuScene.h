@@ -6,8 +6,8 @@ private:
 	int MainMenuSelected;
 	sf::Font font;
 	sf::Text mainMenu[max_main_menu];
-	sf::Color inactiveColor{ sf::Color::White };
-	sf::Color activeColor{ 150, 121, 199 };
+	sf::Color inactiveColor{ 239, 230, 250 };
+	sf::Color activeColor{ 144, 114, 181 };
 	sf::RectangleShape background;
 	sf::RectangleShape backgroundStars;
 	sf::RectangleShape backgroundStars2;

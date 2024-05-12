@@ -19,24 +19,16 @@ Projectile::Projectile(Game* game) {
 	this->game = game;
 }
 
-void Projectile::update(float elapsed) {
-	//float deltaX = vx * elapsed / 1000;
-	float deltaY = vy * elapsed / 1000;
-	//px += deltaX;
-	py += deltaY;
-	if (py + sizeY >= game->screenSize.y && vy > 0) {
+sf::Rect<float> Projectile::getLocalBounds() const {
+	return { 0, 0, 10.f, 16.f };
+}
 
-		vy = -vy;
+void Projectile::update(float elapsed) {
+	float deltaY = vy * elapsed / 1000;
+	py += deltaY;
+	if (py <= 0 - sizeY) {
+		destroyLater();
 	}
-	/*else if (py <= 0 && vy < 0) {
-		vy = -vy;
-	}
-	if (px + sizeX/2 >= game->screenSize.x && vx > 0) {
-		vx = -vx;
-	}
-	else if (px <= 0 && vx < 0) {
-		vx = -vx;
-	}*/
 }
 
 void Projectile::render(sf::RenderWindow& window) {

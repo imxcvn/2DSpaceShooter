@@ -10,10 +10,10 @@ Game::Game(sf::RenderWindow& window)
 }
 
 void Game::initialize() {
-	loadingScene = new LoadingScene{ 960, 720 };
-	mainMenuScene = new MainMenuScene{ 960, 720 };
-	highScoreScene = new HighScoreScene{ 960, 720, loadingScene };
-	playScene = new PlayScene{ 960, 720 };
+	loadingScene = new LoadingScene{ 820, 940 };
+	mainMenuScene = new MainMenuScene{ 820, 940 };
+	highScoreScene = new HighScoreScene{ 820, 940, loadingScene };
+	playScene = new PlayScene{ 820, 940 };
 	currentScene = loadingScene;
 	nextScene = nullptr;
 }
@@ -22,9 +22,8 @@ void Game::update(float elapsed) {
 	if (nextScene != nullptr) {
 		currentScene = nextScene;
 		nextScene = nullptr;
+		currentScene->shown();
 	}
-
-	currentScene->shown();
 }
 void Game::render(sf::RenderWindow& window) {
 	currentScene->render(window);
@@ -52,6 +51,19 @@ float Game::getPositionX() const {
 
 float Game::getPositionY() const {
 	return playerPositionY;
+}
+
+void Game::setEnemyPosition(float px, float py) {
+	enemyPositionX = px;
+	enemyPositionY = py;
+}
+
+float Game::getEnemyPositionX() const {
+	return enemyPositionX;
+}
+
+float Game::getEnemyPositionY() const {
+	return enemyPositionY;
 }
 
 void Game::changeScene(Scene* newScene) {
