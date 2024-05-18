@@ -15,12 +15,15 @@ public:
 	float playerPositionY;
 	float enemyPositionX;
 	float enemyPositionY;
+	int playerScore;
 	sf::RenderWindow& gameWindow;
 	Game(sf::RenderWindow& window);
 	void initialize();
 	void update(float elapsed);
 	void render(sf::RenderWindow& window);
 	void setPlayerName(const std::string& name);
+	void setScore(int score);
+	int getScore() const;
 	const std::string& getPlayerName() const;
 	void setplayerPosition(float px, float py);
 	float getPositionX() const;

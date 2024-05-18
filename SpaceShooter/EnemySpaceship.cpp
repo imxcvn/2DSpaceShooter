@@ -15,10 +15,15 @@ EnemySpaceship::EnemySpaceship(Game* game) {
 	py = -sizeY;
 	vy = 200.f;
 	this->game = game;
+	score = 100;
 }
 
 sf::Rect<float> EnemySpaceship::getLocalBounds() const {
 	return { 0, 0, sizeX, sizeY };
+}
+
+int EnemySpaceship::getScore() const {
+	return score;
 }
 
 void EnemySpaceship::render(sf::RenderWindow& window) {

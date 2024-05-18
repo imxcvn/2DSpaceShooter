@@ -41,6 +41,7 @@ void HighScoreScene::render(sf::RenderWindow& window) {
 
 void HighScoreScene::shown() {
 	name.setString(Game::instance->getPlayerName() + "'s");
+	highestScore.setString(std::to_string(Game::instance->getScore()));
 	float x = Game::instance->screenSize.x/2 - name.getLocalBounds().width/2;
 	name.setPosition(x, 250);
 	x = Game::instance->screenSize.x / 2 - text.getLocalBounds().width / 2;

@@ -9,8 +9,10 @@ private:
 	float sizeX;
 	float sizeY;
 	Game* game;
+	int score;
 public:
 	EnemySpaceship(Game* game);
+	int getScore() const;
 	void update(float elapsed) override;
 	void render(sf::RenderWindow& window) override;
 	sf::Rect<float> getLocalBounds() const override;

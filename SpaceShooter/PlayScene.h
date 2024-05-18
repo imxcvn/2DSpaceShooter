@@ -12,6 +12,12 @@ private:
 	std::vector<EnemyProjectile*> projectiles;
 	std::vector<EnemySpaceship*> enemies;
 	SpaceShip* spaceShip;
+	sf::Clock enemySpawnClock;
+	int score;
+	sf::Text playerScore;
+	sf::Font font;
+	sf::Sprite hearts;
+	sf::Texture heartsTexture;
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

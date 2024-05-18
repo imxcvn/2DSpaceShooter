@@ -36,6 +36,14 @@ void Game::setPlayerName(const std::string& name) {
 	playerName = name;
 }
 
+void Game::setScore(int score) {
+	playerScore = score;
+}
+
+int Game::getScore() const {
+	return playerScore;
+}
+
 const std::string& Game::getPlayerName() const {
 	return playerName;
 }

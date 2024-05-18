@@ -1,6 +1,29 @@
 #include "Includes.h"
 
 PlayScene::PlayScene(float width, float height) {
+
+	if (!font.loadFromFile("Font/ARCADE.ttf")) {
+		std::cout << "Nie ma czcionki." << std::endl;
+	}
+	score = 0;
+	playerScore.setFont(font);
+	playerScore.setFillColor(sf::Color::White);
+	playerScore.setCharacterSize(70);
+	playerScore.setString(std::to_string(score));
+	playerScore.setPosition(15, 2.5);
+
+	if (!heartsTexture.loadFromFile("Texture/3hearts.png")) {
+		std::cout << "Nie ma zdj." << std::endl;
+	}
+	hearts.setTexture(heartsTexture);
+	sf::Vector2u textureSize = heartsTexture.getSize();
+	float sizeX = 150.f;
+	float sizeY = 50.f;
+	float scaleX = sizeX / textureSize.x;
+	float scaleY = sizeY / textureSize.y;
+	hearts.setScale(scaleX, scaleY);
+	hearts.setPosition(660, 10);
+
 	background.setSize(sf::Vector2f(820, 940));
 	mainTexture.loadFromFile("Texture/SpaceBackground4.png");
 	background.setTexture(&mainTexture);
@@ -22,12 +45,15 @@ PlayScene::PlayScene(float width, float height) {
 	enemies.push_back(enemy);
 	spaceShip = new SpaceShip{ Game::instance };
 	spaceShip->setPosition(300, 650);
+	
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
 	window.draw(background);
 	window.draw(backgroundStars);
 	window.draw(backgroundStars2);
+	window.draw(playerScore);
+	window.draw(hearts);
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}
@@ -57,6 +83,13 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 			enemies.push_back(spaceship);
 		}
 	}
+	if (enemySpawnClock.getElapsedTime().asSeconds() >= 1.0f) {
+		EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance };
+		projectiles.push_back(eProjectile);
+		EnemySpaceship* spaceship = new EnemySpaceship{ Game::instance };
+		enemies.push_back(spaceship);
+		enemySpawnClock.restart();
+	}
 	return false;
 }
 
@@ -79,6 +112,8 @@ void PlayScene::clear() {
 void PlayScene::shown() {
 	clear();
 	spaceShip = new SpaceShip{ Game::instance };
+	score = 0;
+	playerScore.setString(std::to_string(score));
 }
 
 void PlayScene::update(float elapsed) {
@@ -115,6 +150,9 @@ void PlayScene::update(float elapsed) {
 			if (pBounds.intersects(eBounds)) {
 				objects.erase(objects.begin() + i);
 				enemies.erase(enemies.begin() + j);
+				score += enemies[j]->getScore();
+				playerScore.setString(std::to_string(score));
+				Game::instance->setScore(score);
 				destroyed = true;
 				break;
 			} 
@@ -123,6 +161,7 @@ void PlayScene::update(float elapsed) {
 			i++;
 		}
 	}
+	
 }
 
 PlayScene::~PlayScene() {
