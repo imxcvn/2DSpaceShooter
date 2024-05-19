@@ -3,6 +3,7 @@
 class Game {
 public:
 	static Game* instance;
+	Graphics graphics;
 	HighScoreScene* highScoreScene;
 	PlayScene* playScene;
 	MainMenuScene* mainMenuScene;

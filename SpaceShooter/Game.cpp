@@ -10,6 +10,7 @@ Game::Game(sf::RenderWindow& window)
 }
 
 void Game::initialize() {
+	graphics.loadTextures();
 	loadingScene = new LoadingScene{ 820, 940 };
 	mainMenuScene = new MainMenuScene{ 820, 940 };
 	highScoreScene = new HighScoreScene{ 820, 940, loadingScene };
