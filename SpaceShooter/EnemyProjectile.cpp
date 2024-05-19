@@ -1,21 +1,14 @@
 #include "Includes.h"
 
-EnemyProjectile::EnemyProjectile(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/tile026.png")) {
-		std::cout << "Nie ma zdj." << std::endl;
-	}
+EnemyProjectile::EnemyProjectile(Game* game, float px, float py) {
 
-	px = game->getEnemyPositionX();
-	py = game->getEnemyPositionY();
-
-	shape.setTexture(shapeTexture);
-	sf::Vector2u textureSize = shapeTexture.getSize();
+	this->px = px;
+	this->py = py;
 	sizeX = 20.f;
 	sizeY = 20.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
-	shape.setScale(scaleX, scaleY);
-	shape.setOrigin(scaleX / 2, scaleY / 2);
+	
+	Graphics::setTexture(shape, Graphics::instance->enemyProjectileTexture, sizeX, sizeY);
+
 	this->game = game;
 }
 

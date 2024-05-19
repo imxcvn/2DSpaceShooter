@@ -1,16 +1,12 @@
 #include "Includes.h"
 
 EnemySpaceship::EnemySpaceship(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/enemy_spaceship1.png")) {
-		std::cout << "Nie ma zdj." << std::endl;
-	}
-	shape.setTexture(shapeTexture);
-	sf::Vector2u textureSize = shapeTexture.getSize();
+	elapsedSum = 0;
+
 	sizeX = 60.f;
 	sizeY = 60.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
-	shape.setScale(scaleX, scaleY);
+	Graphics::setTexture(shape, Graphics::instance->enemySpaceshipTexture, sizeX, sizeY);
+
 	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);    
 	py = -sizeY;
 	vy = 200.f;
@@ -51,5 +47,12 @@ void EnemySpaceship::update(float elapsed) {
 	py += deltaY;
 	if (py >= Game::instance->screenSize.y) {
 		destroyLater();
+	}
+	elapsedSum += elapsed;
+	if (elapsedSum >= 1000) {
+		elapsedSum -= 1000;
+		EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance , px + 0.5f * sizeX, py + sizeY};
+		eProjectile->setDamage(damage);
+		Game::instance->playScene->addEnemyProjectile(eProjectile);
 	}
 }

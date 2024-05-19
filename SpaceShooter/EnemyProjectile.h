@@ -12,7 +12,7 @@ private:
 	int damage;
 	Game* game;
 public:
-	EnemyProjectile(Game* game);
+	EnemyProjectile(Game* game, float px, float py);
 	void update(float elapsed) override;
 	void setDamage(int points);
 	int getDamage() const;

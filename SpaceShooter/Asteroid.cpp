@@ -1,16 +1,9 @@
 #include "Includes.h"
 
 Asteroid::Asteroid(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/asteroid.png")) {
-		std::cout << "Nie ma zdj." << std::endl;
-	}
-	shape.setTexture(shapeTexture);
-	sf::Vector2u textureSize = shapeTexture.getSize();
 	sizeX = 60.f;
 	sizeY = 60.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
-	shape.setScale(scaleX, scaleY);
+	Graphics::setTexture(shape, Graphics::instance->asteroidTexture, sizeX, sizeY);
 	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);
 	py = -sizeY;
 	vy = 250.f;

@@ -11,6 +11,7 @@ private:
 	Game* game;
 	int score;
 	int damage;
+	float elapsedSum;
 public:
 	EnemySpaceship(Game* game);
 	int getScore() const;
