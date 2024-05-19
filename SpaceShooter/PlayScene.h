@@ -10,12 +10,12 @@ private:
 	std::vector<Asteroid*> asteroids;
 	SpaceShip* spaceShip;
 	sf::Clock enemySpawnClock;
-	sf::Clock projectileSpawnClock;
+	//sf::Clock projectileSpawnClock;
 	int score;
 	sf::Text playerScore;
 	sf::Font font;
 	sf::Sprite hearts;
-	sf::Texture heartsTexture;
+	//sf::Texture heartsTexture;
 	float sizeX;
 	float sizeY;
 	float scaleX;
@@ -25,6 +25,7 @@ public:
 	void render(sf::RenderWindow& window) override;
 	bool handleEvent(const sf::Event& event, sf::RenderWindow& window) override;
 	void update(float elapsed) override;
+	void addEnemyProjectile(EnemyProjectile* projectile);
 	void shown() override;
 	void clear();
 	~PlayScene();

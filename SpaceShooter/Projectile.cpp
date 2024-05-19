@@ -1,21 +1,15 @@
 #include "Includes.h"
 
 Projectile::Projectile(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/player_projectile2.png")) {
-		std::cout << "Nie ma zdj." << std::endl;
-	}
 	
 	px = game->getPositionX();
 	py = game->getPositionY();
 	
-	shape.setTexture(shapeTexture);
-	sf::Vector2u textureSize = shapeTexture.getSize();
 	sizeX = 10.f;
 	sizeY = 16.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
-	shape.setScale(scaleX, scaleY);
-	shape.setOrigin(scaleX/2, scaleY/2);
+	
+	Graphics::setTexture(shape, Graphics::instance->playerProjectileTexture, sizeX, sizeY);
+
 	this->game = game;
 }
 

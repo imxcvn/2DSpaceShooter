@@ -1,16 +1,12 @@
 #include "Includes.h"
 
 SpaceShip::SpaceShip(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/player_spaceship.png")) {
-		std::cout << "Nie ma zdj." << std::endl;
-	}
-	shape.setTexture(shapeTexture);
-	sf::Vector2u textureSize = shapeTexture.getSize();
+
 	sizeX = 70.f;
 	sizeY = 70.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
-	shape.setScale(scaleX, scaleY);
+	
+	Graphics::setTexture(shape, Graphics::instance->playerSpaceshipTexture, sizeX, sizeY);
+
 	px = game->screenSize.x / 2;  
 	py = game->screenSize.y;
 	hpPoints = 3;
