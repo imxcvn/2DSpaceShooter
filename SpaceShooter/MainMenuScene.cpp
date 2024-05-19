@@ -40,22 +40,11 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	MainMenuSelected = 1;
 
 	background.setSize(sf::Vector2f(820, 940));
-	backgroundStars.setSize(sf::Vector2f(820, 940));
-	backgroundStars2.setSize(sf::Vector2f(820, 940));
-
 	mainTexture.loadFromFile("Texture/SpaceBackground.png");
 	background.setTexture(&mainTexture);
-
-	starTexture.loadFromFile("Texture/stars1.png");
-	backgroundStars.setTexture(&starTexture);
-
-	starTexture2.loadFromFile("Texture/stars3.png");
-	backgroundStars2.setTexture(&starTexture2);
 }
 void MainMenuScene::render(sf::RenderWindow& window) {
 	window.draw(background);
-	window.draw(backgroundStars);
-	window.draw(backgroundStars2);
 	for (int i = 0; i < max_main_menu; i++) {
 		window.draw(mainMenu[i]);
 	}

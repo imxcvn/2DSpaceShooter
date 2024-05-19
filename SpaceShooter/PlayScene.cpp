@@ -17,29 +17,23 @@ PlayScene::PlayScene(float width, float height) {
 	}
 	hearts.setTexture(heartsTexture);
 	sf::Vector2u textureSize = heartsTexture.getSize();
-	float sizeX = 150.f;
-	float sizeY = 50.f;
-	float scaleX = sizeX / textureSize.x;
-	float scaleY = sizeY / textureSize.y;
+	sizeX = 150.f;
+	sizeY = 50.f;
+	scaleX = sizeX / textureSize.x;
+	scaleY = sizeY / textureSize.y;
 	hearts.setScale(scaleX, scaleY);
 	hearts.setPosition(660, 10);
 
 	background.setSize(sf::Vector2f(820, 940));
-	mainTexture.loadFromFile("Texture/SpaceBackground4.png");
+	mainTexture.loadFromFile("Texture/SpaceBackground2.png");
 	background.setTexture(&mainTexture);
-
-	backgroundStars.setSize(sf::Vector2f(820, 940));
-	starTexture.loadFromFile("Texture/stars4.png");
-	backgroundStars.setTexture(&starTexture);
-
-	backgroundStars2.setSize(sf::Vector2f(820, 940));
-	starTexture2.loadFromFile("Texture/stars5.png");
-	backgroundStars2.setTexture(&starTexture2);
 
 	Projectile* object = new Projectile{ Game::instance };
 	EnemyProjectile* projectile = new EnemyProjectile{ Game::instance };
 	EnemySpaceship* enemy = new EnemySpaceship{ Game::instance };
+	Asteroid* asteroid = new Asteroid{ Game::instance };
 
+	asteroids.push_back(asteroid);
 	objects.push_back(object);
 	projectiles.push_back(projectile);
 	enemies.push_back(enemy);
@@ -50,10 +44,11 @@ PlayScene::PlayScene(float width, float height) {
 
 void PlayScene::render(sf::RenderWindow& window) {
 	window.draw(background);
-	window.draw(backgroundStars);
-	window.draw(backgroundStars2);
 	window.draw(playerScore);
 	window.draw(hearts);
+	for (int i = 0; i < asteroids.size(); i++) {
+		asteroids[i]->render(window);
+	}
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}
@@ -84,10 +79,18 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 		}
 	}
 	if (enemySpawnClock.getElapsedTime().asSeconds() >= 1.0f) {
-		EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance };
-		projectiles.push_back(eProjectile);
+		Asteroid* asteroid = new Asteroid{ Game::instance };
+		asteroids.push_back(asteroid);
 		EnemySpaceship* spaceship = new EnemySpaceship{ Game::instance };
 		enemies.push_back(spaceship);
+		Game::instance->setEnemyPosition(spaceship->getPositionX(), spaceship->getPositionY());
+		if (projectileSpawnClock.getElapsedTime().asMilliseconds() >= 10.0f) {
+			EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance };
+			eProjectile->setDamage(spaceship->getDamage());
+			projectiles.push_back(eProjectile);
+			projectileSpawnClock.restart();
+		}
+		
 		enemySpawnClock.restart();
 	}
 	return false;
@@ -98,6 +101,10 @@ void PlayScene::clear() {
 		delete objects[i];
 	}
 	objects.clear();
+	for (int i = 0; i < asteroids.size(); i++) {
+		delete asteroids[i];
+	}
+	asteroids.clear();
 	for (int i = 0; i < projectiles.size(); i++) {
 		delete projectiles[i];
 	}
@@ -117,6 +124,14 @@ void PlayScene::shown() {
 }
 
 void PlayScene::update(float elapsed) {
+	for (int i = 0; i < asteroids.size(); ) {
+		asteroids[i]->update(elapsed);
+		if (asteroids[i]->getShouldBeDestroyed()) {
+			asteroids.erase(asteroids.begin() + i);
+		}
+		else
+			i++;
+	}
 	for (int i = 0; i < objects.size(); ) {
 		objects[i]->update(elapsed);
 		if (objects[i]->getShouldBeDestroyed()) {
@@ -142,6 +157,7 @@ void PlayScene::update(float elapsed) {
 			i++;
 	}
 	spaceShip->update(elapsed);
+
 	for (int i = 0; i < objects.size(); ) {
 		sf::Rect<float> pBounds = objects[i]->getGlobalBounds();
 		bool destroyed = false;
@@ -152,10 +168,72 @@ void PlayScene::update(float elapsed) {
 				enemies.erase(enemies.begin() + j);
 				score += enemies[j]->getScore();
 				playerScore.setString(std::to_string(score));
-				Game::instance->setScore(score);
+				if (score >= Game::instance->getScore()) {
+					Game::instance->setScore(score);
+				}
 				destroyed = true;
 				break;
 			} 
+		}
+		if (destroyed == false) {
+			i++;
+		}
+	}
+
+
+	for (int i = 0; i < asteroids.size(); ) {
+		sf::Rect<float> aBounds = asteroids[i]->getGlobalBounds();
+		bool destroyed = false;
+		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
+		if (aBounds.intersects(sBounds)) {
+			Game::instance->changeScene(Game::instance->mainMenuScene);
+			destroyed = true;
+			break;
+		}
+		if (destroyed == false) {
+			i++;
+		}
+	}
+
+
+	for (int i = 0; i < projectiles.size(); ) {
+		sf::Rect<float> eBounds = projectiles[i]->getGlobalBounds();
+		bool destroyed = false;
+		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
+		if (eBounds.intersects(sBounds)) {
+			spaceShip->decreaseHealth(projectiles[i]->getDamage());
+			if (spaceShip->getHpPoints() == 0) {
+				Game::instance->changeScene(Game::instance->mainMenuScene);
+				destroyed = true;
+				break;
+			}
+			else if (spaceShip->getHpPoints() == 1) {
+				if (!heartsTexture.loadFromFile("Texture/1heart.png")) {
+					std::cout << "Nie ma zdj." << std::endl;
+				}
+				hearts.setTexture(heartsTexture);
+				sf::Vector2u textureSize = heartsTexture.getSize();
+				sizeX = 50.f;
+				sizeY = 50.f;
+				scaleX = sizeX / textureSize.x;
+				scaleY = sizeY / textureSize.y;
+				hearts.setScale(scaleX, scaleY);
+				hearts.setPosition(660, 10);
+			}
+			else if (spaceShip->getHpPoints() == 2) {
+				if (!heartsTexture.loadFromFile("Texture/2hearts.png")) {
+					std::cout << "Nie ma zdj." << std::endl;
+				}
+				hearts.setTexture(heartsTexture);
+				sf::Vector2u textureSize = heartsTexture.getSize();
+				sizeX = 100.f;
+				sizeY = 50.f;
+				scaleX = sizeX / textureSize.x;
+				scaleY = sizeY / textureSize.y;
+				hearts.setScale(scaleX, scaleY);
+				hearts.setPosition(660, 10);
+			}
+			
 		}
 		if (destroyed == false) {
 			i++;

@@ -6,7 +6,7 @@ LoadingScene::LoadingScene(float width, float hight) {
 	}
 
 	text.setFont(font);
-	text.setFillColor({144, 176, 162});
+	text.setFillColor({ 108, 171, 115 });
 	text.setString("Enter your\n  name:");
 	text.setCharacterSize(125);
 	text.setPosition(150, 200);
@@ -30,20 +30,10 @@ LoadingScene::LoadingScene(float width, float hight) {
 	background.setSize(sf::Vector2f(820, 940));
 	mainTexture.loadFromFile("Texture/SpaceBackground3.png");
 	background.setTexture(&mainTexture);
-
-	backgroundStars.setSize(sf::Vector2f(820, 940));
-	starTexture.loadFromFile("Texture/stars6.png");
-	backgroundStars.setTexture(&starTexture);
-
-	backgroundStars2.setSize(sf::Vector2f(820, 940));
-	starTexture2.loadFromFile("Texture/stars7.png");
-	backgroundStars2.setTexture(&starTexture2);
 }
 
 void LoadingScene::render(sf::RenderWindow& window) {
 	window.draw(background);
-	window.draw(backgroundStars);
-	window.draw(backgroundStars2);
 	window.draw(text);
 	window.draw(playerName);
 	window.draw(errorText);

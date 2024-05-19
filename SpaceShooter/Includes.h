@@ -8,6 +8,7 @@
 #include <vector>
 #include "Scene.h"
 #include "GameObject.h"
+#include "Asteroid.h"
 #include "Projectile.h"
 #include "EnemyProjectile.h"
 #include "SpaceShip.h"

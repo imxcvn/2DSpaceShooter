@@ -9,11 +9,7 @@ private:
 	sf::Color inactiveColor{ 239, 230, 250 };
 	sf::Color activeColor{ 144, 114, 181 };
 	sf::RectangleShape background;
-	sf::RectangleShape backgroundStars;
-	sf::RectangleShape backgroundStars2;
 	sf::Texture mainTexture;
-	sf::Texture starTexture;
-	sf::Texture starTexture2;
 public:
 	MainMenuScene(float width, float hight);
 	void render(sf::RenderWindow& window) override;

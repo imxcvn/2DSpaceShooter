@@ -19,6 +19,18 @@ EnemyProjectile::EnemyProjectile(Game* game) {
 	this->game = game;
 }
 
+sf::Rect<float> EnemyProjectile::getLocalBounds() const {
+	return { 0, 0, 20.f, 20.f };
+}
+
+void EnemyProjectile::setDamage(int points) {
+	damage = points;
+}
+
+int EnemyProjectile::getDamage() const {
+	return damage;
+}
+
 void EnemyProjectile::update(float elapsed) {
 	float deltaY = vy * elapsed / 1000;
 	py += deltaY;

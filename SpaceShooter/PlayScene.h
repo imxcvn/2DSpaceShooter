@@ -4,20 +4,22 @@ class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
 	sf::Texture mainTexture;
-	sf::RectangleShape backgroundStars;
-	sf::Texture starTexture;
-	sf::RectangleShape backgroundStars2;
-	sf::Texture starTexture2;
 	std::vector<Projectile*> objects;
 	std::vector<EnemyProjectile*> projectiles;
 	std::vector<EnemySpaceship*> enemies;
+	std::vector<Asteroid*> asteroids;
 	SpaceShip* spaceShip;
 	sf::Clock enemySpawnClock;
+	sf::Clock projectileSpawnClock;
 	int score;
 	sf::Text playerScore;
 	sf::Font font;
 	sf::Sprite hearts;
 	sf::Texture heartsTexture;
+	float sizeX;
+	float sizeY;
+	float scaleX;
+	float scaleY;
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

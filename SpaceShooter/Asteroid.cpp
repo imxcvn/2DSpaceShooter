@@ -1,7 +1,7 @@
 #include "Includes.h"
 
-EnemySpaceship::EnemySpaceship(Game* game) {
-	if (!shapeTexture.loadFromFile("Texture/enemy_spaceship1.png")) {
+Asteroid::Asteroid(Game* game) {
+	if (!shapeTexture.loadFromFile("Texture/asteroid.png")) {
 		std::cout << "Nie ma zdj." << std::endl;
 	}
 	shape.setTexture(shapeTexture);
@@ -11,40 +11,27 @@ EnemySpaceship::EnemySpaceship(Game* game) {
 	float scaleX = sizeX / textureSize.x;
 	float scaleY = sizeY / textureSize.y;
 	shape.setScale(scaleX, scaleY);
-	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);    
+	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);
 	py = -sizeY;
-	vy = 200.f;
+	vy = 250.f;
 	this->game = game;
-	score = 100;
-	damage = 1;
+	damage = 2;
 }
 
-sf::Rect<float> EnemySpaceship::getLocalBounds() const {
+sf::Rect<float> Asteroid::getLocalBounds() const {
 	return { 0, 0, sizeX, sizeY };
 }
 
-float EnemySpaceship::getPositionX() const {
-	return px + sizeX/2;
-}
-
-float EnemySpaceship::getPositionY() const {
-	return py + sizeY;
-}
-
-int EnemySpaceship::getScore() const {
-	return score;
-}
-
-void EnemySpaceship::render(sf::RenderWindow& window) {
+void Asteroid::render(sf::RenderWindow& window) {
 	shape.setPosition({ px,py });
 	window.draw(shape);
 }
 
-int EnemySpaceship::getDamage() const {
+int Asteroid::getDamage() const {
 	return damage;
 }
 
-void EnemySpaceship::update(float elapsed) {
+void Asteroid::update(float elapsed) {
 	float deltaX = vx * elapsed / 1000;
 	float deltaY = vy * elapsed / 1000;
 	px += deltaX;

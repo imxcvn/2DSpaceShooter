@@ -1,6 +1,6 @@
 #pragma once
 
-class EnemySpaceship : public GameObject {
+class Asteroid : public GameObject {
 private:
 	sf::Sprite shape;
 	sf::Texture shapeTexture;
@@ -9,14 +9,10 @@ private:
 	float sizeX;
 	float sizeY;
 	Game* game;
-	int score;
 	int damage;
 public:
-	EnemySpaceship(Game* game);
-	int getScore() const;
+	Asteroid(Game* game);
 	int getDamage() const;
-	float getPositionX() const override;
-	float getPositionY() const override;
 	void update(float elapsed) override;
 	void render(sf::RenderWindow& window) override;
 	sf::Rect<float> getLocalBounds() const override;

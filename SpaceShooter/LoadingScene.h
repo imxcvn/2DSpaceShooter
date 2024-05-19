@@ -4,10 +4,6 @@ class LoadingScene : public Scene {
 private:
 	sf::RectangleShape background;
 	sf::Texture mainTexture;
-	sf::RectangleShape backgroundStars;
-	sf::Texture starTexture;
-	sf::RectangleShape backgroundStars2;
-	sf::Texture starTexture2;
 	std::string input;
 	sf::Text playerName;
 	sf::Font font;

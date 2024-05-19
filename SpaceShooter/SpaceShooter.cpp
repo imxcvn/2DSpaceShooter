@@ -3,6 +3,7 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(820, 940), "Space Odyssey", sf::Style::Default);
 	window.setVerticalSyncEnabled(true);
+	window.setMouseCursorVisible(false);
 
 	sf::Clock clock;
 

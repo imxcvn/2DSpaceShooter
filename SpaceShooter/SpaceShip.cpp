@@ -13,6 +13,7 @@ SpaceShip::SpaceShip(Game* game) {
 	shape.setScale(scaleX, scaleY);
 	px = game->screenSize.x / 2;  
 	py = game->screenSize.y;
+	hpPoints = 3;
 	this->game = game;
 }
 
@@ -36,6 +37,18 @@ void SpaceShip::update(float elapsed) {
 		px = Game::instance->screenSize.x - sizeX;
 		Game::instance->setplayerPosition(px + sizeX / 2, py);
 	}
+}
+
+sf::Rect<float> SpaceShip::getLocalBounds() const {
+	return { 0, 0, sizeX, sizeY };
+}
+
+void SpaceShip::decreaseHealth(int damage) {
+	hpPoints -= damage;
+}
+
+int SpaceShip::getHpPoints() const {
+	return hpPoints;
 }
 
 void SpaceShip::render(sf::RenderWindow& window) {
