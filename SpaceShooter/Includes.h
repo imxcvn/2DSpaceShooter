@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
@@ -7,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "Scene.h"
+#include "Graphics.h"
 #include "GameObject.h"
 #include "Asteroid.h"
 #include "Projectile.h"

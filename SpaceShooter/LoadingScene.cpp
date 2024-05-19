@@ -27,7 +27,10 @@ LoadingScene::LoadingScene(float width, float hight) {
 	errorText.setOutlineColor(sf::Color::Black);
 	errorText.setOutlineThickness(1.5);
 
-	background.setSize(sf::Vector2f(820, 940));
+	background.setSize(sf::Vector2f(820, 940)); 
+	if (!std::filesystem::exists("Texture/SpaceBackground3.png")) {
+		std::cout << "Brak tla dla ekranu loading." << std::endl;
+	}
 	mainTexture.loadFromFile("Texture/SpaceBackground3.png");
 	background.setTexture(&mainTexture);
 }

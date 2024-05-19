@@ -40,6 +40,9 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	MainMenuSelected = 1;
 
 	background.setSize(sf::Vector2f(820, 940));
+	if (!std::filesystem::exists("Texture/SpaceBackground.png")) {
+		std::cout << "Brak tla dla glownego menu." << std::endl;
+	}
 	mainTexture.loadFromFile("Texture/SpaceBackground.png");
 	background.setTexture(&mainTexture);
 }
