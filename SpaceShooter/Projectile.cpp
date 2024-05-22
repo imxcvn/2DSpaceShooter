@@ -2,11 +2,10 @@
 
 Projectile::Projectile(Game* game) {
 	
-	px = game->getPositionX();
+	sizeX = 15.f;
+	sizeY = 24.f;
+	px = game->getPositionX() - sizeX/2;
 	py = game->getPositionY();
-	
-	sizeX = 10.f;
-	sizeY = 16.f;
 	
 	Graphics::setTexture(shape, Graphics::instance->playerProjectileTexture, sizeX, sizeY);
 
@@ -14,7 +13,7 @@ Projectile::Projectile(Game* game) {
 }
 
 sf::Rect<float> Projectile::getLocalBounds() const {
-	return { 0, 0, 10.f, 16.f };
+	return { 0, 0, 15.f, 24.f };
 }
 
 void Projectile::update(float elapsed) {
