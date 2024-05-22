@@ -27,12 +27,8 @@ LoadingScene::LoadingScene(float width, float hight) {
 	errorText.setOutlineColor(sf::Color::Black);
 	errorText.setOutlineThickness(1.5);
 
-	background.setSize(sf::Vector2f(820, 940)); 
-	if (!std::filesystem::exists("Texture/SpaceBackground3.png")) {
-		std::cout << "Brak tla dla ekranu loading." << std::endl;
-	}
-	mainTexture.loadFromFile("Texture/SpaceBackground3.png");
-	background.setTexture(&mainTexture);
+	Graphics::setBgTexture(background, Graphics::instance->loadingScreenTexture);
+	sound.setBuffer(Graphics::instance->scoreScreenBuffer);
 }
 
 void LoadingScene::render(sf::RenderWindow& window) {
@@ -67,6 +63,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 			if (isCorrect(input)) {
 				Game::instance->setPlayerName(input);
 				Game::instance->changeScene(Game::instance->mainMenuScene);
+				sound.play();
 				return true;
 			}
 			else {

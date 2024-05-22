@@ -9,7 +9,9 @@ private:
 	sf::Color inactiveColor{ 239, 230, 250 };
 	sf::Color activeColor{ 144, 114, 181 };
 	sf::RectangleShape background;
-	sf::Texture mainTexture;
+	sf::Sound sound1;
+	sf::Sound sound2;
+	sf::Sound sound;
 public:
 	MainMenuScene(float width, float hight);
 	void render(sf::RenderWindow& window) override;

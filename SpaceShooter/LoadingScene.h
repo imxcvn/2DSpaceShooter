@@ -3,13 +3,13 @@
 class LoadingScene : public Scene {
 private:
 	sf::RectangleShape background;
-	sf::Texture mainTexture;
 	std::string input;
 	sf::Text playerName;
 	sf::Font font;
 	sf::Text text;
 	sf::Text errorText;
 	sf::Color color{ 255, 255, 255 };
+	sf::Sound sound;
 public:
 	LoadingScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

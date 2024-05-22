@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
+#include <SFML/Audio.hpp>
 #include <sstream>
 #include <regex>
 #include <string>
@@ -11,6 +12,7 @@
 #include "Graphics.h"
 #include "GameObject.h"
 #include "Asteroid.h"
+#include "SmallAsteroid.h"
 #include "Projectile.h"
 #include "EnemyProjectile.h"
 #include "SpaceShip.h"

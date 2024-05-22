@@ -26,12 +26,8 @@ HighScoreScene::HighScoreScene(float width, float height, LoadingScene* loadingS
 	highestScore.setOutlineColor(color);
 	highestScore.setOutlineThickness(3.5);
 
-	background.setSize(sf::Vector2f(820, 940));
-	if (!std::filesystem::exists("Texture/SpaceBackground4.png")) {
-		std::cout << "Brak t?a dla ekranu high score." << std::endl;
-	}
-	mainTexture.loadFromFile("Texture/SpaceBackground4.png");
-	background.setTexture(&mainTexture);
+	Graphics::setBgTexture(background, Graphics::instance->highScoreTexture);
+	
 }
 
 void HighScoreScene::render(sf::RenderWindow& window) {

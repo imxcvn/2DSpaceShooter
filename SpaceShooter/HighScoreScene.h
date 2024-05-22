@@ -3,7 +3,6 @@
 class HighScoreScene : public Scene {
 private:
 	sf::RectangleShape background;
-	sf::Texture mainTexture;
 	int Score = 0;
 	sf::Font font;
 	sf::Text highestScore;

@@ -39,12 +39,10 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 
 	MainMenuSelected = 1;
 
-	background.setSize(sf::Vector2f(820, 940));
-	if (!std::filesystem::exists("Texture/SpaceBackground.png")) {
-		std::cout << "Brak tla dla glownego menu." << std::endl;
-	}
-	mainTexture.loadFromFile("Texture/SpaceBackground.png");
-	background.setTexture(&mainTexture);
+	Graphics::setBgTexture(background, Graphics::instance->mainMenuTexture);
+	sound1.setBuffer(Graphics::instance->clickBuffer);
+	sound2.setBuffer(Graphics::instance->enterBuffer);
+	sound.setBuffer(Graphics::instance->scoreScreenBuffer);
 }
 void MainMenuScene::render(sf::RenderWindow& window) {
 	window.draw(background);
@@ -65,6 +63,8 @@ void MainMenuScene::moveUp() {
 		mainMenu[MainMenuSelected].setFillColor(activeColor);
 		mainMenu[MainMenuSelected].setOutlineColor(sf::Color::White);
 		mainMenu[MainMenuSelected].setOutlineThickness(3);
+		
+		sound1.play();
 	}
 }
 void MainMenuScene::moveDown() {
@@ -82,6 +82,7 @@ void MainMenuScene::moveDown() {
 		mainMenu[MainMenuSelected].setFillColor(activeColor);
 		mainMenu[MainMenuSelected].setOutlineColor(sf::Color::White);
 		mainMenu[MainMenuSelected].setOutlineThickness(3);
+		sound1.play();
 	}
 }
 int MainMenuScene::MainMenuPressed() {
@@ -99,7 +100,7 @@ bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window
 			return true;
 		}
 		if (event.key.code == sf::Keyboard::Return) {			
-
+			sound2.play();
 			int x = MainMenuPressed();
 			if (x == 1) {
 				Game::instance->changeScene(Game::instance->playScene);

@@ -4,6 +4,7 @@ class Graphics {
 public:
 	static Graphics* instance;
 	sf::Texture asteroidTexture;
+	sf::Texture smallAsteroidTexture;
 	sf::Texture enemyProjectileTexture;
 	sf::Texture enemySpaceshipTexture;
 	sf::Texture playerProjectileTexture;
@@ -16,6 +17,15 @@ public:
 	sf::Texture loadingScreenTexture;
 	sf::Texture playScreenTexture;
 	sf::Texture mainMenuTexture;
+
+	sf::SoundBuffer endBuffer;
+	sf::SoundBuffer enemyBuffer;
+	sf::SoundBuffer playerBuffer;
+	sf::SoundBuffer clickBuffer;
+	sf::SoundBuffer enterBuffer;
+	sf::SoundBuffer scoreBuffer;
+	sf::SoundBuffer shootBuffer;
+	sf::SoundBuffer scoreScreenBuffer;
 	Graphics();
 	void loadTextures();
 	static void setTexture(sf::Sprite& shape, sf::Texture& texture, float sizeX, float sizeY);

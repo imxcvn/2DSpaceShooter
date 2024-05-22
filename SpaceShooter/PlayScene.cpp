@@ -21,22 +21,13 @@ PlayScene::PlayScene(float width, float height) {
 	hearts.setScale(scaleX, scaleY);
 	hearts.setPosition(660, 10);
 
-	background.setSize(sf::Vector2f(820, 940));
-	mainTexture.loadFromFile("Texture/SpaceBackground2.png");
-	background.setTexture(&mainTexture);
-
-	/*Projectile* object = new Projectile{ Game::instance };
-	EnemyProjectile* projectile = new EnemyProjectile{ Game::instance };
-	EnemySpaceship* enemy = new EnemySpaceship{ Game::instance };
-	Asteroid* asteroid = new Asteroid{ Game::instance };
-
-	asteroids.push_back(asteroid);
-	objects.push_back(object);
-	projectiles.push_back(projectile);
-	enemies.push_back(enemy);*/
-	/*spaceShip = new SpaceShip{ Game::instance };
-	spaceShip->setPosition(300, 650);*/
-	
+	Graphics::setBgTexture(background, Graphics::instance->playScreenTexture);
+	endSound.setBuffer(Graphics::instance->endBuffer);
+	enemySound.setBuffer(Graphics::instance->enemyBuffer);
+	playerSound.setBuffer(Graphics::instance->playerBuffer);
+	scoreSound.setBuffer(Graphics::instance->scoreBuffer);
+	shootSound.setBuffer(Graphics::instance->shootBuffer);
+	shootSound.setVolume(20.f);
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
@@ -45,6 +36,9 @@ void PlayScene::render(sf::RenderWindow& window) {
 	window.draw(hearts);
 	for (int i = 0; i < asteroids.size(); i++) {
 		asteroids[i]->render(window);
+	}
+	for (int i = 0; i < smallAsteroids.size(); i++) {
+		smallAsteroids[i]->render(window);
 	}
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
@@ -67,27 +61,17 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 		if (event.key.code == sf::Keyboard::Space) {
 			Projectile* object = new Projectile{ Game::instance };
 			objects.push_back(object);
+			playerSound.play();
 		}
-		/*if (event.key.code == sf::Keyboard::B) {
-			EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance };
-			projectiles.push_back(eProjectile);
-			EnemySpaceship* spaceship = new EnemySpaceship{ Game::instance };
-			enemies.push_back(spaceship);
-		}*/
 	}
 	if (enemySpawnClock.getElapsedTime().asSeconds() >= 1.0f) {
 		Asteroid* asteroid = new Asteroid{ Game::instance };
 		asteroids.push_back(asteroid);
+		SmallAsteroid* sAsteroid = new SmallAsteroid{ Game::instance };
+		smallAsteroids.push_back(sAsteroid);
 		EnemySpaceship* spaceship = new EnemySpaceship{ Game::instance };
 		enemies.push_back(spaceship);
 		Game::instance->setEnemyPosition(spaceship->getPositionX(), spaceship->getPositionY());
-		/*if (projectileSpawnClock.getElapsedTime().asMilliseconds() >= 10.0f) {
-			EnemyProjectile* eProjectile = new EnemyProjectile{ Game::instance };
-			eProjectile->setDamage(spaceship->getDamage());
-			projectiles.push_back(eProjectile);
-			projectileSpawnClock.restart();
-		}*/
-		
 		enemySpawnClock.restart();
 	}
 	return false;
@@ -95,6 +79,7 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 
 void PlayScene::addEnemyProjectile(EnemyProjectile* projectile) {
 	projectiles.push_back(projectile);
+	enemySound.play();
 }
 
 void PlayScene::clear() {
@@ -106,6 +91,10 @@ void PlayScene::clear() {
 		delete asteroids[i];
 	}
 	asteroids.clear();
+	for (int i = 0; i < smallAsteroids.size(); i++) {
+		delete smallAsteroids[i];
+	}
+	smallAsteroids.clear();
 	for (int i = 0; i < projectiles.size(); i++) {
 		delete projectiles[i];
 	}
@@ -132,11 +121,36 @@ void PlayScene::shown() {
 	hearts.setPosition(660, 10);
 }
 
+void PlayScene::updateHearts(int hpPoints, sf::Sprite& hearts) {
+	if (hpPoints == 1) {
+		hearts.setTexture(Graphics::instance->oneHeart);
+		sf::Vector2u textureSize = Graphics::instance->oneHeart.getSize();
+		hearts.setScale(50.f / textureSize.x, 50.f / textureSize.y);
+		hearts.setPosition(760, 10);
+		shootSound.play();
+	}
+	else if (hpPoints == 2) {
+		hearts.setTexture(Graphics::instance->twoHearts);
+		sf::Vector2u textureSize = Graphics::instance->twoHearts.getSize();
+		hearts.setScale(100.f / textureSize.x, 50.f / textureSize.y);
+		hearts.setPosition(710, 10);
+		shootSound.play();
+	}
+}
+
 void PlayScene::update(float elapsed) {
 	for (int i = 0; i < asteroids.size(); ) {
 		asteroids[i]->update(elapsed);
 		if (asteroids[i]->getShouldBeDestroyed()) {
 			asteroids.erase(asteroids.begin() + i);
+		}
+		else
+			i++;
+	}
+	for (int i = 0; i < smallAsteroids.size(); ) {
+		smallAsteroids[i]->update(elapsed);
+		if (smallAsteroids[i]->getShouldBeDestroyed()) {
+			smallAsteroids.erase(smallAsteroids.begin() + i);
 		}
 		else
 			i++;
@@ -174,6 +188,7 @@ void PlayScene::update(float elapsed) {
 			sf::Rect<float> eBounds = enemies[j]->getGlobalBounds();
 			if (pBounds.intersects(eBounds)) {
 				score += enemies[j]->getScore();
+				scoreSound.play();
 				delete enemies[j];
 				delete objects[i];
 				objects.erase(objects.begin() + i);
@@ -192,7 +207,6 @@ void PlayScene::update(float elapsed) {
 		}
 	}
 
-
 	for (int i = 0; i < asteroids.size(); ) {
 		sf::Rect<float> aBounds = asteroids[i]->getGlobalBounds();
 		bool destroyed = false;
@@ -201,38 +215,44 @@ void PlayScene::update(float elapsed) {
 			spaceShip->decreaseHealth(asteroids[i]->getDamage());
 			delete asteroids[i];
 			asteroids.erase(asteroids.begin() + i);
-
 			if (spaceShip->getHpPoints() == 0) {
+				endSound.play();
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				destroyed = true;
 				break;
 			}
-			else if (spaceShip->getHpPoints() == 1) {
-				hearts.setTexture(Graphics::instance->oneHeart);
-				sf::Vector2u textureSize = Graphics::instance->oneHeart.getSize();
-				sizeX = 50.f;
-				sizeY = 50.f;
-				scaleX = sizeX / textureSize.x;
-				scaleY = sizeY / textureSize.y;
-				hearts.setScale(scaleX, scaleY);
-				hearts.setPosition(660, 10);
+			else {
+				updateHearts(spaceShip->getHpPoints(), hearts);
 			}
-			else if (spaceShip->getHpPoints() == 2) {
-				hearts.setTexture(Graphics::instance->twoHearts);
-				sf::Vector2u textureSize = Graphics::instance->twoHearts.getSize();
-				sizeX = 100.f;
-				sizeY = 50.f;
-				scaleX = sizeX / textureSize.x;
-				scaleY = sizeY / textureSize.y;
-				hearts.setScale(scaleX, scaleY);
-				hearts.setPosition(660, 10);
-			}
+			
 		}
 		if (destroyed == false) {
 			i++;
 		}
 	}
 
+	for (int i = 0; i < smallAsteroids.size(); ) {
+		sf::Rect<float> aBounds = smallAsteroids[i]->getGlobalBounds();
+		bool destroyed = false;
+		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
+		if (aBounds.intersects(sBounds)) {
+			spaceShip->decreaseHealth(smallAsteroids[i]->getDamage());
+			delete smallAsteroids[i];
+			smallAsteroids.erase(smallAsteroids.begin() + i);
+			if (spaceShip->getHpPoints() == 0) {
+				endSound.play();
+				Game::instance->changeScene(Game::instance->mainMenuScene);
+				destroyed = true;
+				break;
+			}
+			else {
+				updateHearts(spaceShip->getHpPoints(), hearts);
+			}
+		}
+		if (destroyed == false) {
+			i++;
+		}
+	}
 
 	for (int i = 0; i < projectiles.size(); ) {
 		sf::Rect<float> eBounds = projectiles[i]->getGlobalBounds();
@@ -243,29 +263,13 @@ void PlayScene::update(float elapsed) {
 			delete projectiles[i];
 			projectiles.erase(projectiles.begin() + i);
 			if (spaceShip->getHpPoints() == 0) {
+				endSound.play();
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				destroyed = true;
 				break;
 			}
-			else if (spaceShip->getHpPoints() == 1) {
-				hearts.setTexture(Graphics::instance->oneHeart);
-				sf::Vector2u textureSize = Graphics::instance->oneHeart.getSize();
-				sizeX = 50.f;
-				sizeY = 50.f;
-				scaleX = sizeX / textureSize.x;
-				scaleY = sizeY / textureSize.y;
-				hearts.setScale(scaleX, scaleY);
-				hearts.setPosition(660, 10);
-			}
-			else if (spaceShip->getHpPoints() == 2) {
-				hearts.setTexture(Graphics::instance->twoHearts);
-				sf::Vector2u textureSize = Graphics::instance->twoHearts.getSize();
-				sizeX = 100.f;
-				sizeY = 50.f;
-				scaleX = sizeX / textureSize.x;
-				scaleY = sizeY / textureSize.y;
-				hearts.setScale(scaleX, scaleY);
-				hearts.setPosition(660, 10);
+			else {
+				updateHearts(spaceShip->getHpPoints(), hearts);
 			}
 			
 		}
