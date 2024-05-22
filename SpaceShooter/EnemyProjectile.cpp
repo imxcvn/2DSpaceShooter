@@ -2,10 +2,10 @@
 
 EnemyProjectile::EnemyProjectile(Game* game, float px, float py) {
 
-	this->px = px;
-	this->py = py;
 	sizeX = 20.f;
 	sizeY = 20.f;
+	this->px = px - sizeX/2;
+	this->py = py;
 	
 	Graphics::setTexture(shape, Graphics::instance->enemyProjectileTexture, sizeX, sizeY);
 
