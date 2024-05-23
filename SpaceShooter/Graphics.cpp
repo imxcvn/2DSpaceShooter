@@ -81,6 +81,18 @@ void Graphics::loadTextures() {
 	if (!scoreScreenBuffer.loadFromFile("Sound/Omnious 4 cut.wav")) {
 		std::cout << "Nie ma dzwieku dla score screen." << std::endl;
 	}
+	if (!typingBuffer.loadFromFile("Sound/c612-354d-423b-8e8b-322eb3e9a143.wav")) {
+		std::cout << "Nie ma dzwieku dla typing." << std::endl;
+	}
+	if (!correctBuffer.loadFromFile("Sound/6848-801d-4285-b762-d399c539557f.wav")) {
+		std::cout << "Nie ma dzwieku dla correct." << std::endl;
+	}
+	if (!errorBuffer.loadFromFile("Sound/bdfb-3702-4f69-8dfa-c797ff1c3196.wav")) {
+		std::cout << "Nie ma dzwieku dla error." << std::endl;
+	}
+	if (!musicBuffer.loadFromFile("Sound/c192-0c3d-4157-995a-34fe7432a257.wav")) {
+		std::cout << "Nie ma dzwieku dla muzyki." << std::endl;
+	}
 }
 
 void Graphics::setTexture(sf::Sprite& shape, sf::Texture& texture, float sizeX, float sizeY) {
