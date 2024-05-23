@@ -42,7 +42,8 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	Graphics::setBgTexture(background, Graphics::instance->mainMenuTexture);
 	sound1.setBuffer(Graphics::instance->clickBuffer);
 	sound2.setBuffer(Graphics::instance->enterBuffer);
-	sound.setBuffer(Graphics::instance->scoreScreenBuffer);
+	//sound.setBuffer(Graphics::instance->scoreScreenBuffer);
+	sound1.setVolume(20.f);
 }
 void MainMenuScene::render(sf::RenderWindow& window) {
 	window.draw(background);

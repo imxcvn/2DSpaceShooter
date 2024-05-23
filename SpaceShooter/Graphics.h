@@ -26,6 +26,10 @@ public:
 	sf::SoundBuffer scoreBuffer;
 	sf::SoundBuffer shootBuffer;
 	sf::SoundBuffer scoreScreenBuffer;
+	sf::SoundBuffer typingBuffer;
+	sf::SoundBuffer correctBuffer;
+	sf::SoundBuffer errorBuffer;
+	sf::SoundBuffer musicBuffer;
 	Graphics();
 	void loadTextures();
 	static void setTexture(sf::Sprite& shape, sf::Texture& texture, float sizeX, float sizeY);

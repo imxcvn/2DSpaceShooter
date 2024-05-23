@@ -29,6 +29,12 @@ LoadingScene::LoadingScene(float width, float hight) {
 
 	Graphics::setBgTexture(background, Graphics::instance->loadingScreenTexture);
 	sound.setBuffer(Graphics::instance->scoreScreenBuffer);
+	clickSound.setBuffer(Graphics::instance->typingBuffer);
+	clickSound.setVolume(20.f);
+	correctSound.setBuffer(Graphics::instance->correctBuffer);
+	correctSound.setVolume(30.f);
+	errorSound.setBuffer(Graphics::instance->errorBuffer);
+	errorSound.setVolume(30.f);
 }
 
 void LoadingScene::render(sf::RenderWindow& window) {
@@ -61,12 +67,14 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 
 		if (event.text.unicode == 13) {  
 			if (isCorrect(input)) {
+				correctSound.play();
 				Game::instance->setPlayerName(input);
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				sound.play();
 				return true;
 			}
 			else {
+				errorSound.play();
 				errorText.setString("Invalid player name.\n Please try again.");
 				input.clear();
 				playerName.setString(input);
@@ -84,6 +92,7 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 			}
 		}
 		else if (event.text.unicode < 128) { 
+			clickSound.play();
 			input += static_cast<char>(event.text.unicode);
 			playerName.setString(input);
 			x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;

@@ -24,6 +24,7 @@ private:
 	sf::Sound playerSound;
 	sf::Sound scoreSound;
 	sf::Sound shootSound;
+	sf::Sound music;
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

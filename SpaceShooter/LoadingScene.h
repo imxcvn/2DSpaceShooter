@@ -10,6 +10,9 @@ private:
 	sf::Text errorText;
 	sf::Color color{ 255, 255, 255 };
 	sf::Sound sound;
+	sf::Sound clickSound;
+	sf::Sound correctSound;
+	sf::Sound errorSound;
 public:
 	LoadingScene(float width, float height);
 	void render(sf::RenderWindow& window) override;

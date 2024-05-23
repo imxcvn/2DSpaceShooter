@@ -28,6 +28,10 @@ PlayScene::PlayScene(float width, float height) {
 	scoreSound.setBuffer(Graphics::instance->scoreBuffer);
 	shootSound.setBuffer(Graphics::instance->shootBuffer);
 	shootSound.setVolume(20.f);
+	endSound.setVolume(30.f);
+	music.setBuffer(Graphics::instance->musicBuffer);
+	music.setVolume(20.f);
+	music.setLoop(true);
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
@@ -119,6 +123,8 @@ void PlayScene::shown() {
 	scaleY = sizeY / textureSize.y;
 	hearts.setScale(scaleX, scaleY);
 	hearts.setPosition(660, 10);
+	music.play();
+	
 }
 
 void PlayScene::updateHearts(int hpPoints, sf::Sprite& hearts) {
@@ -139,6 +145,7 @@ void PlayScene::updateHearts(int hpPoints, sf::Sprite& hearts) {
 }
 
 void PlayScene::update(float elapsed) {
+	
 	for (int i = 0; i < asteroids.size(); ) {
 		asteroids[i]->update(elapsed);
 		if (asteroids[i]->getShouldBeDestroyed()) {
@@ -216,6 +223,7 @@ void PlayScene::update(float elapsed) {
 			delete asteroids[i];
 			asteroids.erase(asteroids.begin() + i);
 			if (spaceShip->getHpPoints() == 0) {
+				music.stop();
 				endSound.play();
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				destroyed = true;
@@ -240,6 +248,7 @@ void PlayScene::update(float elapsed) {
 			delete smallAsteroids[i];
 			smallAsteroids.erase(smallAsteroids.begin() + i);
 			if (spaceShip->getHpPoints() == 0) {
+				music.stop();
 				endSound.play();
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				destroyed = true;
@@ -263,6 +272,7 @@ void PlayScene::update(float elapsed) {
 			delete projectiles[i];
 			projectiles.erase(projectiles.begin() + i);
 			if (spaceShip->getHpPoints() == 0) {
+				music.stop();
 				endSound.play();
 				Game::instance->changeScene(Game::instance->mainMenuScene);
 				destroyed = true;
