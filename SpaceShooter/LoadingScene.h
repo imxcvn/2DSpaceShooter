@@ -13,10 +13,11 @@ private:
 	sf::Sound clickSound;
 	sf::Sound correctSound;
 	sf::Sound errorSound;
+	sf::Sound deleteSound;
 public:
 	LoadingScene(float width, float height);
 	void render(sf::RenderWindow& window) override;
 	bool isCorrect(const std::string& input);
-	const std::string& getPlayerName();
+	std::string getPlayerName();
 	bool handleEvent(const sf::Event& event, sf::RenderWindow& window) override;
 };

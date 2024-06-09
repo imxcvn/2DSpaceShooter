@@ -11,7 +11,6 @@ private:
 	sf::RectangleShape background;
 	sf::Sound sound1;
 	sf::Sound sound2;
-	//sf::Sound sound;
 public:
 	MainMenuScene(float width, float hight);
 	void render(sf::RenderWindow& window) override;

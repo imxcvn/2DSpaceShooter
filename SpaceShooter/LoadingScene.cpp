@@ -28,13 +28,20 @@ LoadingScene::LoadingScene(float width, float hight) {
 	errorText.setOutlineThickness(1.5);
 
 	Graphics::setBgTexture(background, Graphics::instance->loadingScreenTexture);
-	sound.setBuffer(Graphics::instance->scoreScreenBuffer);
-	clickSound.setBuffer(Graphics::instance->typingBuffer);
+
+	sound.setBuffer(Sound::instance->scoreScreenBuffer);
+
+	clickSound.setBuffer(Sound::instance->typingBuffer);
 	clickSound.setVolume(20.f);
-	correctSound.setBuffer(Graphics::instance->correctBuffer);
+
+	correctSound.setBuffer(Sound::instance->correctBuffer);
 	correctSound.setVolume(30.f);
-	errorSound.setBuffer(Graphics::instance->errorBuffer);
+
+	errorSound.setBuffer(Sound::instance->errorBuffer);
 	errorSound.setVolume(30.f);
+
+	deleteSound.setBuffer(Sound::instance->deleteBuffer);
+	deleteSound.setVolume(30.f);
 }
 
 void LoadingScene::render(sf::RenderWindow& window) {
@@ -44,7 +51,7 @@ void LoadingScene::render(sf::RenderWindow& window) {
 	window.draw(errorText);
 }
 
-const std::string& LoadingScene::getPlayerName() {
+std::string LoadingScene::getPlayerName() {
 	return playerName.getString();
 }
 
@@ -60,12 +67,10 @@ bool LoadingScene::isCorrect(const std::string& input) {
 
 bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	if (event.type == sf::Event::TextEntered) {
-
 		float x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
 		playerName.setPosition(x, 510);
 		errorText.setString("");
-
-		if (event.text.unicode == 13) {  
+		if (event.text.unicode == 13) {
 			if (isCorrect(input)) {
 				correctSound.play();
 				Game::instance->setPlayerName(input);
@@ -83,28 +88,31 @@ bool LoadingScene::handleEvent(const sf::Event& event, sf::RenderWindow& window)
 				return false;
 			}
 		}
-		else if (event.text.unicode == 8) { 
+		else if (event.text.unicode == 8) {
 			if (!input.empty()) {
+				deleteSound.play();
 				input.pop_back();
 				playerName.setString(input);
 				x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
 				playerName.setPosition(x, 510);
 			}
 		}
-		else if (event.text.unicode < 128) { 
+		else if (event.text.unicode < 128 && event.text.unicode > 32) {
 			clickSound.play();
 			input += static_cast<char>(event.text.unicode);
 			playerName.setString(input);
 			x = Game::instance->screenSize.x / 2 - playerName.getLocalBounds().width / 2;
 			playerName.setPosition(x, 510);
+		} 
+		else if (event.text.unicode == 27) {
+			window.close();
+			return true;
 		}
 	}
-
 	else if (event.type == sf::Event::Closed) {
 		window.close();
 		return true;
 	}
 	return false;
 }
-
 

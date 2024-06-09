@@ -9,7 +9,7 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	mainMenu[0].setFont(font);
 	mainMenu[0].setString(" Space \nOdyssey");
 	mainMenu[0].setCharacterSize(155);
-	mainMenu[0].setFillColor({187, 161, 227});
+	mainMenu[0].setFillColor({ 187, 161, 227 });
 	mainMenu[0].setOutlineColor({ 243, 237, 250 });
 	mainMenu[0].setOutlineThickness(4);
 	float x = Game::instance->screenSize.x / 2 - mainMenu[0].getLocalBounds().width / 2;
@@ -40,9 +40,8 @@ MainMenuScene::MainMenuScene(float width, float hight) {
 	MainMenuSelected = 1;
 
 	Graphics::setBgTexture(background, Graphics::instance->mainMenuTexture);
-	sound1.setBuffer(Graphics::instance->clickBuffer);
-	sound2.setBuffer(Graphics::instance->enterBuffer);
-	//sound.setBuffer(Graphics::instance->scoreScreenBuffer);
+	sound1.setBuffer(Sound::instance->clickBuffer);
+	sound2.setBuffer(Sound::instance->enterBuffer);
 	sound1.setVolume(20.f);
 }
 void MainMenuScene::render(sf::RenderWindow& window) {
@@ -64,7 +63,7 @@ void MainMenuScene::moveUp() {
 		mainMenu[MainMenuSelected].setFillColor(activeColor);
 		mainMenu[MainMenuSelected].setOutlineColor(sf::Color::White);
 		mainMenu[MainMenuSelected].setOutlineThickness(3);
-		
+
 		sound1.play();
 	}
 }
@@ -90,7 +89,6 @@ int MainMenuScene::MainMenuPressed() {
 	return MainMenuSelected;
 }
 bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
-	
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Up) {
 			moveUp();
@@ -100,7 +98,7 @@ bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window
 			moveDown();
 			return true;
 		}
-		if (event.key.code == sf::Keyboard::Return) {			
+		if (event.key.code == sf::Keyboard::Return) {
 			sound2.play();
 			int x = MainMenuPressed();
 			if (x == 1) {
@@ -120,4 +118,3 @@ bool MainMenuScene::handleEvent(const sf::Event& event, sf::RenderWindow& window
 MainMenuScene::~MainMenuScene() {
 
 }
-
