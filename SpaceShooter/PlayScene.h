@@ -3,22 +3,21 @@
 class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
+	sf::RectangleShape stars;
+	sf::RectangleShape stars20;
 	sf::Texture mainTexture;
 	std::vector<Projectile*> objects;
 	std::vector<EnemyProjectile*> projectiles;
-	std::vector<EnemySpaceship*> enemies;
-	std::vector<Asteroid*> asteroids;
-	std::vector<SmallAsteroid*> smallAsteroids;
-	SpaceShip* spaceShip;
+	std::vector<EnemyObject*> enemies;
+	SpaceShip* spaceShip = nullptr;
 	sf::Clock enemySpawnClock;
+	sf::Clock secondEnemySpawnClock;
 	int score;
 	sf::Text playerScore;
 	sf::Font font;
-	sf::Sprite hearts;
-	float sizeX;
-	float sizeY;
-	float scaleX;
-	float scaleY;
+	sf::Sprite heart1;
+	sf::Sprite heart2;
+	sf::Sprite heart3;
 	sf::Sound endSound;
 	sf::Sound enemySound;
 	sf::Sound playerSound;
@@ -30,9 +29,11 @@ public:
 	void render(sf::RenderWindow& window) override;
 	bool handleEvent(const sf::Event& event, sf::RenderWindow& window) override;
 	void update(float elapsed) override;
-	void updateHearts(int hpPoints, sf::Sprite& hearts);
 	void addEnemyProjectile(EnemyProjectile* projectile);
 	void shown() override;
 	void clear();
+	void gameOver();
+	void setScore(int score);
+	void addScore(int score);
 	~PlayScene();
 };

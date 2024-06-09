@@ -1,6 +1,7 @@
 #include "Includes.h"
 
 SpaceShip::SpaceShip(Game* game) {
+	isShot = false;
 
 	sizeX = 70.f;
 	sizeY = 70.f;
@@ -33,6 +34,33 @@ void SpaceShip::update(float elapsed) {
 		px = Game::instance->screenSize.x - sizeX;
 		Game::instance->setplayerPosition(px + sizeX / 2, py);
 	}
+    
+	if (isShot == true) {
+
+		blinkingTime += elapsed;
+		if (blinkingTime >= 200) {
+			
+			blinkingTime -= 200;
+			blinkCounter++;
+			
+			if (blinkCounter % 2 == 0) {
+				shape.setTexture(Graphics::instance->shotTexture);
+			}
+			else {
+				shape.setTexture(Graphics::instance->playerSpaceshipTexture);
+			}
+			if (blinkCounter >= 5) {
+				isShot = false;
+			}
+		}
+	}
+}
+
+void SpaceShip::startBlinking() {
+	blinkCounter = 0;
+	blinkingTime = 0;
+	shape.setTexture(Graphics::instance->shotTexture);
+	isShot = true;
 }
 
 sf::Rect<float> SpaceShip::getLocalBounds() const {
@@ -40,7 +68,9 @@ sf::Rect<float> SpaceShip::getLocalBounds() const {
 }
 
 void SpaceShip::decreaseHealth(int damage) {
-	hpPoints -= damage;
+	if (isShot == false) {
+		hpPoints -= damage;
+	}
 }
 
 int SpaceShip::getHpPoints() const {

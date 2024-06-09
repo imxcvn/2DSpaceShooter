@@ -12,38 +12,65 @@ PlayScene::PlayScene(float width, float height) {
 	playerScore.setString(std::to_string(score));
 	playerScore.setPosition(15, 2.5);
 
-	hearts.setTexture(Graphics::instance->threeHearts);
-	sf::Vector2u textureSize = Graphics::instance->threeHearts.getSize();
-	sizeX = 150.f;
-	sizeY = 50.f;
-	scaleX = sizeX / textureSize.x;
-	scaleY = sizeY / textureSize.y;
-	hearts.setScale(scaleX, scaleY);
-	hearts.setPosition(660, 10);
+	background.setSize(sf::Vector2f((float) Graphics::instance->bgTexture.getSize().x, (float) Graphics::instance->bgTexture.getSize().y));
+	background.setTexture(&Graphics::instance->bgTexture);
 
-	Graphics::setBgTexture(background, Graphics::instance->playScreenTexture);
-	endSound.setBuffer(Graphics::instance->endBuffer);
-	enemySound.setBuffer(Graphics::instance->enemyBuffer);
-	playerSound.setBuffer(Graphics::instance->playerBuffer);
-	scoreSound.setBuffer(Graphics::instance->scoreBuffer);
-	shootSound.setBuffer(Graphics::instance->shootBuffer);
-	shootSound.setVolume(20.f);
-	endSound.setVolume(30.f);
-	music.setBuffer(Graphics::instance->musicBuffer);
+	stars.setSize(sf::Vector2f((float) Graphics::instance->starsTexture.getSize().x, (float) Graphics::instance->starsTexture.getSize().y));
+	stars.setTexture(&Graphics::instance->starsTexture);
+
+	stars20.setSize(sf::Vector2f((float) Graphics::instance->stars20Texture.getSize().x, (float) Graphics::instance->stars20Texture.getSize().y));
+	stars20.setTexture(&Graphics::instance->stars20Texture);
+
+	Graphics::instance->setTexture(heart1, Graphics::instance->oneHeart, 50.f, 50.f);
+	Graphics::instance->setTexture(heart2, Graphics::instance->oneHeart, 50.f, 50.f);
+	Graphics::instance->setTexture(heart3, Graphics::instance->oneHeart, 50.f, 50.f);
+
+	heart1.setPosition(650, 15);
+	heart2.setPosition(700, 15);
+	heart3.setPosition(750, 15);
+
+	endSound.setBuffer(Sound::instance->endBuffer);
+
+	enemySound.setBuffer(Sound::instance->enemyBuffer);
+	enemySound.setVolume(60.f);
+
+	playerSound.setBuffer(Sound::instance->playerBuffer);
+	playerSound.setVolume(30.f);
+
+	scoreSound.setBuffer(Sound::instance->scoreBuffer);
+
+	shootSound.setBuffer(Sound::instance->shootBuffer);
+	shootSound.setVolume(50.f);
+
+	music.setBuffer(Sound::instance->musicBuffer);
 	music.setVolume(20.f);
 	music.setLoop(true);
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
+	float shipMinX = 0;
+	float shipMaxX = Game::instance->screenSize.x - spaceShip->sizeX;
+	float normalizedShipX = (spaceShip->getPositionX() - shipMinX) / (shipMaxX - shipMinX);
+
+	float backgroundViewMinX = 0;
+	float backgroundViewMaxX = Graphics::instance->bgTexture.getSize().x - Game::instance->screenSize.x;
+	float backgroundX = backgroundViewMinX + normalizedShipX * (backgroundViewMaxX - backgroundViewMinX);
+
+	float starsViewMinX = 0;
+	float starsViewMaxX = Graphics::instance->starsTexture.getSize().x - Game::instance->screenSize.x;
+	float starsX = starsViewMinX + normalizedShipX * (starsViewMaxX - starsViewMinX);
+
+	float stars20ViewMinX = 0;
+	float stars20ViewMaxX = Graphics::instance->stars20Texture.getSize().x - Game::instance->screenSize.x;
+	float stars20X = stars20ViewMinX + normalizedShipX * (stars20ViewMaxX - stars20ViewMinX);
+
+	background.setPosition(-backgroundX, background.getPosition().y);
+	stars.setPosition(-starsX, stars.getPosition().y);
+	stars20.setPosition(-stars20X, stars20.getPosition().y);
 	window.draw(background);
-	window.draw(playerScore);
-	window.draw(hearts);
-	for (int i = 0; i < asteroids.size(); i++) {
-		asteroids[i]->render(window);
-	}
-	for (int i = 0; i < smallAsteroids.size(); i++) {
-		smallAsteroids[i]->render(window);
-	}
+	window.draw(stars);
+	window.draw(stars20);
+	
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}
@@ -53,12 +80,23 @@ void PlayScene::render(sf::RenderWindow& window) {
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->render(window);
 	}
+
 	spaceShip->render(window);
+	window.draw(playerScore);
+	window.draw(heart3);
+
+	if (spaceShip->getHpPoints() >= 2) {
+		window.draw(heart2);
+		if (spaceShip->getHpPoints() == 3) {
+			window.draw(heart1);
+		}
+	}
 }
 
 bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Escape) {
+			music.stop();
 			Game::instance->changeScene(Game::instance->mainMenuScene);
 			return true;
 		}
@@ -70,13 +108,19 @@ bool PlayScene::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	}
 	if (enemySpawnClock.getElapsedTime().asSeconds() >= 1.0f) {
 		Asteroid* asteroid = new Asteroid{ Game::instance };
-		asteroids.push_back(asteroid);
+		enemies.push_back(asteroid);
 		SmallAsteroid* sAsteroid = new SmallAsteroid{ Game::instance };
-		smallAsteroids.push_back(sAsteroid);
+		enemies.push_back(sAsteroid);
 		EnemySpaceship* spaceship = new EnemySpaceship{ Game::instance };
 		enemies.push_back(spaceship);
 		Game::instance->setEnemyPosition(spaceship->getPositionX(), spaceship->getPositionY());
 		enemySpawnClock.restart();
+	}
+	if (secondEnemySpawnClock.getElapsedTime().asSeconds() >= 3.0f) {
+		EnemySpaceship2* spaceship2 = new EnemySpaceship2{ Game::instance };
+		enemies.push_back(spaceship2);
+		Game::instance->setEnemyPosition(spaceship2->getPositionX(), spaceship2->getPositionY());
+		secondEnemySpawnClock.restart();
 	}
 	return false;
 }
@@ -86,19 +130,20 @@ void PlayScene::addEnemyProjectile(EnemyProjectile* projectile) {
 	enemySound.play();
 }
 
+void PlayScene::setScore(int score) {
+	this->score = score;
+	playerScore.setString(std::to_string(this->score));
+}
+
+void PlayScene::addScore(int score) {
+	setScore(this->score + score);
+}
+
 void PlayScene::clear() {
 	for (int i = 0; i < objects.size(); i++) {
 		delete objects[i];
 	}
 	objects.clear();
-	for (int i = 0; i < asteroids.size(); i++) {
-		delete asteroids[i];
-	}
-	asteroids.clear();
-	for (int i = 0; i < smallAsteroids.size(); i++) {
-		delete smallAsteroids[i];
-	}
-	smallAsteroids.clear();
 	for (int i = 0; i < projectiles.size(); i++) {
 		delete projectiles[i];
 	}
@@ -107,6 +152,7 @@ void PlayScene::clear() {
 		delete enemies[i];
 	}
 	enemies.clear();
+
 	delete spaceShip;
 }
 
@@ -115,53 +161,21 @@ void PlayScene::shown() {
 	spaceShip = new SpaceShip{ Game::instance };
 	score = 0;
 	playerScore.setString(std::to_string(score));
-	hearts.setTexture(Graphics::instance->threeHearts);
-	sf::Vector2u textureSize = Graphics::instance->threeHearts.getSize();
-	sizeX = 150.f;
-	sizeY = 50.f;
-	scaleX = sizeX / textureSize.x;
-	scaleY = sizeY / textureSize.y;
-	hearts.setScale(scaleX, scaleY);
-	hearts.setPosition(660, 10);
 	music.play();
-	
 }
 
-void PlayScene::updateHearts(int hpPoints, sf::Sprite& hearts) {
-	if (hpPoints == 1) {
-		hearts.setTexture(Graphics::instance->oneHeart);
-		sf::Vector2u textureSize = Graphics::instance->oneHeart.getSize();
-		hearts.setScale(50.f / textureSize.x, 50.f / textureSize.y);
-		hearts.setPosition(760, 10);
-		shootSound.play();
-	}
-	else if (hpPoints == 2) {
-		hearts.setTexture(Graphics::instance->twoHearts);
-		sf::Vector2u textureSize = Graphics::instance->twoHearts.getSize();
-		hearts.setScale(100.f / textureSize.x, 50.f / textureSize.y);
-		hearts.setPosition(710, 10);
-		shootSound.play();
+void PlayScene::gameOver() {
+	music.stop();
+	endSound.play();
+	Game::instance->changeScene(Game::instance->mainMenuScene);
+	if (score >= Game::instance->getScore()) {
+
+		Game::instance->setScore(score);
 	}
 }
 
 void PlayScene::update(float elapsed) {
-	
-	for (int i = 0; i < asteroids.size(); ) {
-		asteroids[i]->update(elapsed);
-		if (asteroids[i]->getShouldBeDestroyed()) {
-			asteroids.erase(asteroids.begin() + i);
-		}
-		else
-			i++;
-	}
-	for (int i = 0; i < smallAsteroids.size(); ) {
-		smallAsteroids[i]->update(elapsed);
-		if (smallAsteroids[i]->getShouldBeDestroyed()) {
-			smallAsteroids.erase(smallAsteroids.begin() + i);
-		}
-		else
-			i++;
-	}
+
 	for (int i = 0; i < objects.size(); ) {
 		objects[i]->update(elapsed);
 		if (objects[i]->getShouldBeDestroyed()) {
@@ -192,70 +206,39 @@ void PlayScene::update(float elapsed) {
 		sf::Rect<float> pBounds = objects[i]->getGlobalBounds();
 		bool destroyed = false;
 		for (int j = 0; j < enemies.size(); j++) {
-			sf::Rect<float> eBounds = enemies[j]->getGlobalBounds();
-			if (pBounds.intersects(eBounds)) {
-				score += enemies[j]->getScore();
-				scoreSound.play();
-				delete enemies[j];
-				delete objects[i];
-				objects.erase(objects.begin() + i);
-				enemies.erase(enemies.begin() + j);
-				playerScore.setString(std::to_string(score));
-				if (score >= Game::instance->getScore()) {
-
-					Game::instance->setScore(score);
+			if (enemies[j]->getCanBeDestroyedByProjectile()) {
+				sf::Rect<float> eBounds = enemies[j]->getGlobalBounds();
+				if (pBounds.intersects(eBounds)) {
+					addScore(enemies[j]->getScore());
+					scoreSound.play();
+					delete enemies[j];
+					delete objects[i];
+					objects.erase(objects.begin() + i);
+					enemies.erase(enemies.begin() + j);
+					destroyed = true;
+					break;
 				}
-				destroyed = true;
-				break;
-			} 
+			}
 		}
 		if (destroyed == false) {
 			i++;
 		}
 	}
 
-	for (int i = 0; i < asteroids.size(); ) {
-		sf::Rect<float> aBounds = asteroids[i]->getGlobalBounds();
+	for (int i = 0; i < enemies.size(); ) {
+		sf::Rect<float> eBounds = enemies[i]->getGlobalBounds();
 		bool destroyed = false;
 		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
-		if (aBounds.intersects(sBounds)) {
-			spaceShip->decreaseHealth(asteroids[i]->getDamage());
-			delete asteroids[i];
-			asteroids.erase(asteroids.begin() + i);
-			if (spaceShip->getHpPoints() == 0) {
-				music.stop();
-				endSound.play();
-				Game::instance->changeScene(Game::instance->mainMenuScene);
-				destroyed = true;
+		if (eBounds.intersects(sBounds)) {
+			shootSound.play();
+			spaceShip->decreaseHealth(enemies[i]->getDamage());
+			spaceShip->startBlinking();
+			delete enemies[i];
+			enemies.erase(enemies.begin() + i);
+			destroyed = true;
+			if (spaceShip->getHpPoints() <= 0) {
+				gameOver();
 				break;
-			}
-			else {
-				updateHearts(spaceShip->getHpPoints(), hearts);
-			}
-			
-		}
-		if (destroyed == false) {
-			i++;
-		}
-	}
-
-	for (int i = 0; i < smallAsteroids.size(); ) {
-		sf::Rect<float> aBounds = smallAsteroids[i]->getGlobalBounds();
-		bool destroyed = false;
-		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
-		if (aBounds.intersects(sBounds)) {
-			spaceShip->decreaseHealth(smallAsteroids[i]->getDamage());
-			delete smallAsteroids[i];
-			smallAsteroids.erase(smallAsteroids.begin() + i);
-			if (spaceShip->getHpPoints() == 0) {
-				music.stop();
-				endSound.play();
-				Game::instance->changeScene(Game::instance->mainMenuScene);
-				destroyed = true;
-				break;
-			}
-			else {
-				updateHearts(spaceShip->getHpPoints(), hearts);
 			}
 		}
 		if (destroyed == false) {
@@ -268,26 +251,21 @@ void PlayScene::update(float elapsed) {
 		bool destroyed = false;
 		sf::Rect<float> sBounds = spaceShip->getGlobalBounds();
 		if (eBounds.intersects(sBounds)) {
+			shootSound.play();
 			spaceShip->decreaseHealth(projectiles[i]->getDamage());
+			spaceShip->startBlinking();
 			delete projectiles[i];
 			projectiles.erase(projectiles.begin() + i);
-			if (spaceShip->getHpPoints() == 0) {
-				music.stop();
-				endSound.play();
-				Game::instance->changeScene(Game::instance->mainMenuScene);
-				destroyed = true;
+			destroyed = true;
+			if (spaceShip->getHpPoints() <= 0) {
+				gameOver();
 				break;
 			}
-			else {
-				updateHearts(spaceShip->getHpPoints(), hearts);
-			}
-			
 		}
 		if (destroyed == false) {
 			i++;
 		}
 	}
-	
 }
 
 PlayScene::~PlayScene() {
