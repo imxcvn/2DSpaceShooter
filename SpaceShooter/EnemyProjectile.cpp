@@ -2,8 +2,8 @@
 
 EnemyProjectile::EnemyProjectile(Game* game, float px, float py) {
 
-	sizeX = 20.f;
-	sizeY = 20.f;
+	sizeX = 22.f;
+	sizeY = 25.f;
 	this->px = px - sizeX/2;
 	this->py = py;
 	

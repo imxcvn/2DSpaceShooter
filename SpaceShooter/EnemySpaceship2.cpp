@@ -1,22 +1,22 @@
 #include "Includes.h"
 
-EnemySpaceship::EnemySpaceship(Game* game) {
+EnemySpaceship2::EnemySpaceship2(Game* game) {
 	elapsedSum = 0;
 
 	sizeX = 60.f;
 	sizeY = 60.f;
-	Graphics::setTexture(shape, Graphics::instance->enemySpaceshipTexture, sizeX, sizeY);
+	Graphics::setTexture(shape, Graphics::instance->enemySpaceshipTexture2, sizeX, sizeY);
 
-	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);    
+	px = float(rand()) / RAND_MAX * (game->screenSize.x - sizeX);
 	py = -sizeY;
-	vy = 200.f;
+	vy = 220.f;
 	this->game = game;
-	score = 100;
-	damage = 1;
+	score = 150;
+	damage = 2;
 	canGetDestroyedByProjectile = true;
 }
 
-void EnemySpaceship::update(float elapsed) {
+void EnemySpaceship2::update(float elapsed) {
 	EnemyObject::update(elapsed);
 	elapsedSum += elapsed;
 	if (elapsedSum >= 1000) {
