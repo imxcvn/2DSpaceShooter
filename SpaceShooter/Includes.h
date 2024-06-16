@@ -1,13 +1,16 @@
-#include <filesystem>
-#include <iostream>
+import <filesystem>;
+import <iostream>;
+
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
-#include <SFML/Audio.hpp>
-#include <sstream>
-#include <regex>
-#include <string>
-#include <vector>
+#include "SFML/Audio.hpp"
+
+import <sstream>;
+import <regex>;
+import <string>;
+import <vector>;
+
 #include "Scene.h"
 #include "Graphics.h"
 #include "Sound.h"
@@ -25,4 +28,3 @@
 #include "HighScoreScene.h"
 #include "PlayScene.h"
 #include "Game.h"
-

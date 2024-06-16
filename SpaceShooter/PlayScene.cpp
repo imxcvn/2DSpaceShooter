@@ -12,14 +12,19 @@ PlayScene::PlayScene(float width, float height) {
 	playerScore.setString(std::to_string(score));
 	playerScore.setPosition(15, 2.5);
 
-	background.setSize(sf::Vector2f((float) Graphics::instance->bgTexture.getSize().x, (float) Graphics::instance->bgTexture.getSize().y));
+	background.setSize(sf::Vector2f((float)Graphics::instance->bgTexture.getSize().x, (float)Graphics::instance->bgTexture.getSize().y));
 	background.setTexture(&Graphics::instance->bgTexture);
 
-	stars.setSize(sf::Vector2f((float) Graphics::instance->starsTexture.getSize().x, (float) Graphics::instance->starsTexture.getSize().y));
+	stars.setSize(sf::Vector2f((float)Graphics::instance->starsTexture.getSize().x, (float)Graphics::instance->starsTexture.getSize().y));
 	stars.setTexture(&Graphics::instance->starsTexture);
 
-	stars20.setSize(sf::Vector2f((float) Graphics::instance->stars20Texture.getSize().x, (float) Graphics::instance->stars20Texture.getSize().y));
-	stars20.setTexture(&Graphics::instance->stars20Texture);
+	stars20a.setSize(sf::Vector2f((float)Graphics::instance->stars20Texture.getSize().x, (float)Graphics::instance->stars20Texture.getSize().y));
+	stars20a.setTexture(&Graphics::instance->stars20Texture);
+	stars20a.setPosition(0, 0);
+
+	stars20b.setSize(sf::Vector2f((float)Graphics::instance->stars20Texture.getSize().x, (float)Graphics::instance->stars20Texture.getSize().y));
+	stars20b.setTexture(&Graphics::instance->stars20Texture);
+	stars20b.setPosition(0, -stars20b.getSize().y);
 
 	Graphics::instance->setTexture(heart1, Graphics::instance->oneHeart, 50.f, 50.f);
 	Graphics::instance->setTexture(heart2, Graphics::instance->oneHeart, 50.f, 50.f);
@@ -45,6 +50,8 @@ PlayScene::PlayScene(float width, float height) {
 	music.setBuffer(Sound::instance->musicBuffer);
 	music.setVolume(20.f);
 	music.setLoop(true);
+
+	stars20ScrollSpeed = 0.1f;
 }
 
 void PlayScene::render(sf::RenderWindow& window) {
@@ -60,17 +67,18 @@ void PlayScene::render(sf::RenderWindow& window) {
 	float starsViewMaxX = Graphics::instance->starsTexture.getSize().x - Game::instance->screenSize.x;
 	float starsX = starsViewMinX + normalizedShipX * (starsViewMaxX - starsViewMinX);
 
-	float stars20ViewMinX = 0;
+	/*float stars20ViewMinX = 0;
 	float stars20ViewMaxX = Graphics::instance->stars20Texture.getSize().x - Game::instance->screenSize.x;
-	float stars20X = stars20ViewMinX + normalizedShipX * (stars20ViewMaxX - stars20ViewMinX);
+	float stars20X = stars20ViewMinX + normalizedShipX * (stars20ViewMaxX - stars20ViewMinX);*/
 
 	background.setPosition(-backgroundX, background.getPosition().y);
 	stars.setPosition(-starsX, stars.getPosition().y);
-	stars20.setPosition(-stars20X, stars20.getPosition().y);
+	//stars20.setPosition(-stars20X, stars20.getPosition().y);
 	window.draw(background);
 	window.draw(stars);
-	window.draw(stars20);
-	
+	window.draw(stars20a);
+	window.draw(stars20b);
+
 	for (int i = 0; i < objects.size(); i++) {
 		objects[i]->render(window);
 	}
@@ -175,6 +183,19 @@ void PlayScene::gameOver() {
 }
 
 void PlayScene::update(float elapsed) {
+
+	float stars20aY = stars20a.getPosition().y + stars20ScrollSpeed * elapsed;
+	float stars20bY = stars20b.getPosition().y + stars20ScrollSpeed * elapsed;
+
+	if (stars20aY > Game::instance->screenSize.y) {
+		stars20aY -= 2 * stars20a.getSize().y;
+	}
+	if (stars20bY > Game::instance->screenSize.y) {
+		stars20bY -= 2 * stars20b.getSize().y;
+	}
+
+	stars20a.setPosition(stars20a.getPosition().x, stars20aY);
+	stars20b.setPosition(stars20b.getPosition().x, stars20bY);
 
 	for (int i = 0; i < objects.size(); ) {
 		objects[i]->update(elapsed);

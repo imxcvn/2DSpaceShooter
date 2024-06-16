@@ -16,7 +16,7 @@ void Graphics::loadTextures() {
 		std::cout << "Brak tekstury dla small_asteroid." << std::endl;
 	}
 	smallAsteroidTexture.loadFromFile("Texture/small_asteroid.png");
-	
+
 	if (!std::filesystem::exists("Texture/1heart.png")) {
 		std::cout << "Brak tekstury dla oneHeart." << std::endl;
 	}
@@ -26,7 +26,7 @@ void Graphics::loadTextures() {
 		std::cout << "Brak tekstury dla enemyProjectileTexture." << std::endl;
 	}
 	enemyProjectileTexture.loadFromFile("Texture/enemy_rojectile.png");
-	
+
 	if (!std::filesystem::exists("Texture/player_projectile.png")) {
 		std::cout << "Brak tekstury dla playerProjectileTexture." << std::endl;
 	}

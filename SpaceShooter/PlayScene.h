@@ -4,7 +4,8 @@ class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
 	sf::RectangleShape stars;
-	sf::RectangleShape stars20;
+	sf::RectangleShape stars20a;
+	sf::RectangleShape stars20b;
 	sf::Texture mainTexture;
 	std::vector<Projectile*> objects;
 	std::vector<EnemyProjectile*> projectiles;
@@ -24,6 +25,7 @@ private:
 	sf::Sound scoreSound;
 	sf::Sound shootSound;
 	sf::Sound music;
+	float stars20ScrollSpeed;
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;
