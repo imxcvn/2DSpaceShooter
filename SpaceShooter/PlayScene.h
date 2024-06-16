@@ -1,5 +1,6 @@
 #pragma once
 
+
 class PlayScene : public Scene {
 private:
 	sf::RectangleShape background;
@@ -26,6 +27,9 @@ private:
 	sf::Sound shootSound;
 	sf::Sound music;
 	float stars20ScrollSpeed;
+	template<Derived<GameObject> T> void renderGameObjects(sf::RenderWindow& window, std::vector<T*>& v);
+	template<Derived<GameObject> T> void updateGameObjects(float elapsed, std::vector<T*>& v);
+	template<class T> void deleteAllAndClear(std::vector<T*>& v);
 public:
 	PlayScene(float width, float height);
 	void render(sf::RenderWindow& window) override;
@@ -39,3 +43,30 @@ public:
 	void addScore(int score);
 	~PlayScene();
 };
+
+template<Derived<GameObject> T> 
+void PlayScene::renderGameObjects(sf::RenderWindow& window, std::vector<T*>& v) {
+	for (int i = 0; i < v.size(); i++) {
+		v[i]->render(window);
+	}
+}
+
+template<Derived<GameObject> T> 
+void PlayScene::updateGameObjects(float elapsed, std::vector<T*>& v) {
+	for (int i = 0; i < v.size(); ) {
+		v[i]->update(elapsed);
+		if (v[i]->getShouldBeDestroyed()) {
+			v.erase(v.begin() + i);
+		}
+		else
+			i++;
+	}
+}
+
+template<class T> 
+void PlayScene::deleteAllAndClear(std::vector<T*>& v) {
+	for (int i = 0; i < v.size(); i++) {
+		delete v[i];
+	}
+	v.clear();
+}

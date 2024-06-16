@@ -11,6 +11,9 @@ import <regex>;
 import <string>;
 import <vector>;
 
+template <class T, class U>
+concept Derived = std::is_base_of<U, T>::value;
+
 #include "Scene.h"
 #include "Graphics.h"
 #include "Sound.h"

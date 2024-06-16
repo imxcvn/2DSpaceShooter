@@ -8,14 +8,14 @@ PlayScene::PlayScene(float width, float height) {
 	score = 0;
 	playerScore.setFont(font);
 	playerScore.setFillColor(sf::Color::White);
-	playerScore.setCharacterSize(70);
+	playerScore.setCharacterSize(80);
 	playerScore.setString(std::to_string(score));
-	playerScore.setPosition(15, 2.5);
+	playerScore.setPosition(15, 1);
 
-	background.setSize(sf::Vector2f((float)Graphics::instance->bgTexture.getSize().x, (float)Graphics::instance->bgTexture.getSize().y));
+	background.setSize(sf::Vector2f((float) Graphics::instance->bgTexture.getSize().x, (float) Graphics::instance->bgTexture.getSize().y));
 	background.setTexture(&Graphics::instance->bgTexture);
 
-	stars.setSize(sf::Vector2f((float)Graphics::instance->starsTexture.getSize().x, (float)Graphics::instance->starsTexture.getSize().y));
+	stars.setSize(sf::Vector2f((float) Graphics::instance->starsTexture.getSize().x, (float) Graphics::instance->starsTexture.getSize().y));
 	stars.setTexture(&Graphics::instance->starsTexture);
 
 	stars20a.setSize(sf::Vector2f((float)Graphics::instance->stars20Texture.getSize().x, (float)Graphics::instance->stars20Texture.getSize().y));
@@ -26,13 +26,13 @@ PlayScene::PlayScene(float width, float height) {
 	stars20b.setTexture(&Graphics::instance->stars20Texture);
 	stars20b.setPosition(0, -stars20b.getSize().y);
 
-	Graphics::instance->setTexture(heart1, Graphics::instance->oneHeart, 50.f, 50.f);
-	Graphics::instance->setTexture(heart2, Graphics::instance->oneHeart, 50.f, 50.f);
-	Graphics::instance->setTexture(heart3, Graphics::instance->oneHeart, 50.f, 50.f);
+	Graphics::instance->setTexture(heart1, Graphics::instance->oneHeart, 60.f, 60.f);
+	Graphics::instance->setTexture(heart2, Graphics::instance->oneHeart, 60.f, 60.f);
+	Graphics::instance->setTexture(heart3, Graphics::instance->oneHeart, 60.f, 60.f);
 
-	heart1.setPosition(650, 15);
-	heart2.setPosition(700, 15);
-	heart3.setPosition(750, 15);
+	heart1.setPosition(625, 15);
+	heart2.setPosition(685, 15);
+	heart3.setPosition(745, 15);
 
 	endSound.setBuffer(Sound::instance->endBuffer);
 
@@ -67,27 +67,15 @@ void PlayScene::render(sf::RenderWindow& window) {
 	float starsViewMaxX = Graphics::instance->starsTexture.getSize().x - Game::instance->screenSize.x;
 	float starsX = starsViewMinX + normalizedShipX * (starsViewMaxX - starsViewMinX);
 
-	/*float stars20ViewMinX = 0;
-	float stars20ViewMaxX = Graphics::instance->stars20Texture.getSize().x - Game::instance->screenSize.x;
-	float stars20X = stars20ViewMinX + normalizedShipX * (stars20ViewMaxX - stars20ViewMinX);*/
-
 	background.setPosition(-backgroundX, background.getPosition().y);
 	stars.setPosition(-starsX, stars.getPosition().y);
-	//stars20.setPosition(-stars20X, stars20.getPosition().y);
 	window.draw(background);
 	window.draw(stars);
 	window.draw(stars20a);
 	window.draw(stars20b);
-
-	for (int i = 0; i < objects.size(); i++) {
-		objects[i]->render(window);
-	}
-	for (int i = 0; i < projectiles.size(); i++) {
-		projectiles[i]->render(window);
-	}
-	for (int i = 0; i < enemies.size(); i++) {
-		enemies[i]->render(window);
-	}
+	renderGameObjects(window, objects);
+	renderGameObjects(window, projectiles);
+	renderGameObjects(window, enemies);
 
 	spaceShip->render(window);
 	window.draw(playerScore);
@@ -148,19 +136,9 @@ void PlayScene::addScore(int score) {
 }
 
 void PlayScene::clear() {
-	for (int i = 0; i < objects.size(); i++) {
-		delete objects[i];
-	}
-	objects.clear();
-	for (int i = 0; i < projectiles.size(); i++) {
-		delete projectiles[i];
-	}
-	projectiles.clear();
-	for (int i = 0; i < enemies.size(); i++) {
-		delete enemies[i];
-	}
-	enemies.clear();
-
+	deleteAllAndClear(objects);
+	deleteAllAndClear(projectiles);
+	deleteAllAndClear(enemies);
 	delete spaceShip;
 }
 
@@ -183,7 +161,6 @@ void PlayScene::gameOver() {
 }
 
 void PlayScene::update(float elapsed) {
-
 	float stars20aY = stars20a.getPosition().y + stars20ScrollSpeed * elapsed;
 	float stars20bY = stars20b.getPosition().y + stars20ScrollSpeed * elapsed;
 
@@ -197,30 +174,9 @@ void PlayScene::update(float elapsed) {
 	stars20a.setPosition(stars20a.getPosition().x, stars20aY);
 	stars20b.setPosition(stars20b.getPosition().x, stars20bY);
 
-	for (int i = 0; i < objects.size(); ) {
-		objects[i]->update(elapsed);
-		if (objects[i]->getShouldBeDestroyed()) {
-			objects.erase(objects.begin() + i);
-		}
-		else
-			i++;
-	}
-	for (int i = 0; i < projectiles.size(); ) {
-		projectiles[i]->update(elapsed);
-		if (projectiles[i]->getShouldBeDestroyed()) {
-			projectiles.erase(projectiles.begin() + i);
-		}
-		else
-			i++;
-	}
-	for (int i = 0; i < enemies.size(); ) {
-		enemies[i]->update(elapsed);
-		if (enemies[i]->getShouldBeDestroyed()) {
-			enemies.erase(enemies.begin() + i);
-		}
-		else
-			i++;
-	}
+	updateGameObjects(elapsed, objects);
+	updateGameObjects(elapsed, projectiles);
+	updateGameObjects(elapsed, enemies);
 	spaceShip->update(elapsed);
 
 	for (int i = 0; i < objects.size(); ) {

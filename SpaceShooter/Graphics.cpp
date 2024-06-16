@@ -8,78 +8,78 @@ Graphics::Graphics() {
 
 void Graphics::loadTextures() {
 	if (!std::filesystem::exists("Texture/asteroid.png")) {
-		std::cout << "Brak tekstury dla asteroid." << std::endl;
+		throw std::runtime_error("Brak tekstury dla asteroid.");
 	}
 	asteroidTexture.loadFromFile("Texture/asteroid.png");
 
 	if (!std::filesystem::exists("Texture/small_asteroid.png")) {
-		std::cout << "Brak tekstury dla small_asteroid." << std::endl;
+		throw std::runtime_error("Brak tekstury dla small_asteroid.");
 	}
 	smallAsteroidTexture.loadFromFile("Texture/small_asteroid.png");
-
+	
 	if (!std::filesystem::exists("Texture/1heart.png")) {
-		std::cout << "Brak tekstury dla oneHeart." << std::endl;
+		throw std::runtime_error("Brak tekstury dla oneHeart.");
 	}
 	oneHeart.loadFromFile("Texture/1heart.png");
 
 	if (!std::filesystem::exists("Texture/enemy_rojectile.png")) {
-		std::cout << "Brak tekstury dla enemyProjectileTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla enemyProjectileTexture.");
 	}
 	enemyProjectileTexture.loadFromFile("Texture/enemy_rojectile.png");
-
+	
 	if (!std::filesystem::exists("Texture/player_projectile.png")) {
-		std::cout << "Brak tekstury dla playerProjectileTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla playerProjectileTexture.");
 	}
 	playerProjectileTexture.loadFromFile("Texture/player_projectile.png");
 
 	if (!std::filesystem::exists("Texture/enemy_spaceship1.png")) {
-		std::cout << "Brak tekstury dla enemySpaceshipTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla enemySpaceshipTexture.");
 	}
 	enemySpaceshipTexture.loadFromFile("Texture/enemy_spaceship1.png");
 
 	if (!std::filesystem::exists("Texture/enemy_spaceship3.png")) {
-		std::cout << "Brak tekstury dla enemySpaceshipTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla enemySpaceshipTexture.");
 	}
 	enemySpaceshipTexture2.loadFromFile("Texture/enemy_spaceship3.png");
 
 	if (!std::filesystem::exists("Texture/player_spaceship.png")) {
-		std::cout << "Brak tekstury dla playerSpaceshipTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla playerSpaceshipTexture.");
 	}
 	playerSpaceshipTexture.loadFromFile("Texture/player_spaceship.png");
 
 	if (!std::filesystem::exists("Texture/player_spaceship1.png")) {
-		std::cout << "Brak tekstury dla shotTexture." << std::endl;
+		throw std::runtime_error("Brak tekstury dla shotTexture.");
 	}
 	shotTexture.loadFromFile("Texture/player_spaceship1.png");
 
 
 	if (!std::filesystem::exists("Texture/SpaceBackground4.png")) {
-		std::cout << "Brak tla dla ekranu high score." << std::endl;
+		throw std::runtime_error("Brak tla dla ekranu high score.");
 	}
 	highScoreTexture.loadFromFile("Texture/SpaceBackground4.png");
 
 	if (!std::filesystem::exists("Texture/SpaceBackground3.png")) {
-		std::cout << "Brak tla dla ekranu loading." << std::endl;
+		throw std::runtime_error("Brak tla dla ekranu loading.");
 	}
 	loadingScreenTexture.loadFromFile("Texture/SpaceBackground3.png");
 
 	if (!std::filesystem::exists("Texture/SpaceBackground.png")) {
-		std::cout << "Brak tla dla glownego menu." << std::endl;
+		throw std::runtime_error("Brak tla dla glownego menu.");
 	}
 	mainMenuTexture.loadFromFile("Texture/SpaceBackground.png");
 
 	if (!std::filesystem::exists("Texture/Space Background.png")) {
-		std::cout << "Brak tla dla ekranu play." << std::endl;
+		throw std::runtime_error("Brak tla dla ekranu play.");
 	}
 	bgTexture.loadFromFile("Texture/Space Background.png");
 
 	if (!std::filesystem::exists("Texture/stars.png")) {
-		std::cout << "Brak tla dla ekranu play." << std::endl;
+		throw std::runtime_error("Brak tla dla ekranu play(stars).");
 	}
 	starsTexture.loadFromFile("Texture/stars.png");
 
 	if (!std::filesystem::exists("Texture/stars2.0.png")) {
-		std::cout << "Brak tla dla ekranu play." << std::endl;
+		throw std::runtime_error("Brak tla dla ekranu play(stars2.0).");
 	}
 	stars20Texture.loadFromFile("Texture/stars2.0.png");
 }
